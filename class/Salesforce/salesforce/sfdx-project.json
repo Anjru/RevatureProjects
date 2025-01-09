@@ -1,0 +1,27 @@
+{
+  "orgName": "Demo company",
+  "edition": "Developer",
+  "hasSampleData": true,
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    },
+    {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "path": "my-package",
+      "default": false,
+      "package": "myPackage",
+      "versionDescription": ""
+    }
+  ],
+  "name": "salesforce",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "62.0",
+  "packageAliases": {
+    "myPackage": "0Hoaj0000000JVhCAM",
+    "myPackage@0.1.0-1": "04taj0000005DXhAAM"
+  }
+}
