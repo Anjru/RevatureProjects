@@ -8,6 +8,13 @@
 string tempvar = 'Enter_your_name_here';
 System.debug('Hello World!');
 System.debug('My name is ' + tempvar);
-System.debug(Calculator.add(1,2));
-System.debug(Calculator.divide(6,2));
-System.debug(Calculator.mod(5,2));
+//System.debug(Calculator.add(1,2));
+//System.debug(Calculator.divide(6,2));
+//System.debug(Calculator.mod(5,2));
+System.debug(DataLord.numAccounts());
+System.debug(DataLord.numHot());
+System.debug(DataLord.numComplex());
+System.debug(DataLord.bigFive());
+System.debug(DataLord.lastBigOpportunity());
+System.debug(DataLord.majorPlayers());
+System.debug(DataLord.mostPopularAccount());
