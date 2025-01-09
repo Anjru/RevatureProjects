@@ -1,0 +1,27 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    text-decoration: none;
+}
+
+:root{
+    font-size: 16px;
+
+}
+
+.myClasss {
+    background-color:cornflowerblue;
+    padding: 10px;
+}
+
+#myImage {
+    max-width: 600px;
+}
+
+#myDiv{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

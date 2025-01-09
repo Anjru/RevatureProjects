@@ -1,0 +1,28 @@
+#image{
+    max-width: 300px;
+    min-width: 300px;
+    height: 250px;
+    display: block;
+
+}
+
+#table{
+    border: 2px solid gray;
+    background-color: gray;
+    margin: auto;
+}
+
+#table td{
+    border: 5px solid gainsboro;
+    border-collapse: collapse;
+    background-color: gainsboro;
+}
+
+#table tr{
+    background-color: aqua;
+}
+
+body{
+    justify-content: center;
+    background-color: cornflowerblue;
+}
