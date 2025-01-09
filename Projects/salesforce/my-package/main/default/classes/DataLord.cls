@@ -36,8 +36,6 @@ public with sharing class DataLord {
         GROUP BY Account.Name ORDER BY Count(Id) DESC LIMIT 1];
     }
     
-    public static () {
-        //
-    }
+   
 
 }
