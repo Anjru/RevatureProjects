@@ -36,6 +36,19 @@ public with sharing class DataLord {
         GROUP BY Account.Name ORDER BY Count(Id) DESC LIMIT 1];
     }
     
+    public static List<List<sObject>> getContactLead(){
+        List<List<sObject>> conLead = [FIND 'Tom' RETURNING Contact(Name), Lead(Name)];
+        return conLead;
+    }  
    
+    public static List<List<sObject>> getAccount(){
+        List<List<sObject>> accounts = [FIND 'a* and o*' RETURNING Account(Name)];
+        return accounts;
+    }
+
+    public static List<List<sObject>> getPhone(){
+        List<List<sObject>> phone = [FIND '1000' IN PHONE FIELDS RETURNING Account(Name), Contact(Name), Lead(Name)];
+        return phone;
+    } 
 
 }
