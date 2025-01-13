@@ -1,9 +1,9 @@
 public with sharing abstract class Vehicle {
     public enum Medium{LAND, AIR, WATER}
-    private double speed;
-    private String name;
-    Integer occupants;
-    Integer capacity;
+    protected double speed;
+    protected String name;
+    protected Integer occupants;
+    protected Integer capacity;
     protected List<Medium> media = new List<Medium>();
     public Vehicle() {
         this.speed = 1;

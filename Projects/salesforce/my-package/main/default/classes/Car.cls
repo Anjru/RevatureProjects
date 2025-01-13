@@ -44,7 +44,7 @@ public with sharing class Car extends Vehicle {
         return 0;
     }
 
-    public Integer getGear(){
+    public Double getGear(){
         return this.gear;
     }
 
