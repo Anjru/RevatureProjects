@@ -14,7 +14,7 @@
 <!-- Challenge 1 codes -->
 <!-- <apex:page StandardController="Account">
 <h1>The current account is : {!account.name}</h1>
-</apex:pageBlock> -->
+</apex:page> -->
 
 <!-- Challenge 2 -->
  <!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page>
