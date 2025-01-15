@@ -183,7 +183,7 @@ public with sharing class Calculator {
         }
     }
 
-    //Determine which operator takes precedence over the other
+    //Determine precedence of the operator
     private static Integer precedence(String op) {
         if (op == '+' || op == '-') {
             return 1;

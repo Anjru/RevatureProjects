@@ -1,0 +1,29 @@
+<apex:page StandardController="Account" standardStylesheets="false" showHeader="false">
+<apex:stylesheet value="{!$Resource.filestyle}"/>
+<!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page> -->
+  <!-- Begin Default Content REMOVE THIS -->
+  <!-- <h1>The current account is : {!account.name}</h1> -->
+  <!--<h1 class="header">The static account is : {!account.name}</h1> <!-- we should see joe -->
+
+  <apex:form>
+  <apex:commandButton action="{!save}" value="Greet" id="greet"/>
+</apex:form>
+
+<apex:outputPanel id="greet">
+    <apex:outputText value="Hello, {!Account.Name}" rendered="{!NOT(ISBLANK(Account.Name))}"/>
+</apex:outputPanel>
+
+  <!-- <apex:pageBlock title="Viewing Accounts">
+        <apex:form id="theForm">
+            <apex:pageBlockSection >
+                <apex:dataList var="a" value="{!accounts}" type="1">
+                    {!a.name}
+                </apex:dataList>
+            </apex:pageBlockSection>
+            <apex:panelGrid columns="2">
+                <apex:commandLink action="{!previous}">Previous</apex:commandlink>
+                <apex:commandLink action="{!next}">Next</apex:commandlink>
+            </apex:panelGrid>
+        </apex:form> 
+    </apex:pageBlock> -->
+</apex:page>

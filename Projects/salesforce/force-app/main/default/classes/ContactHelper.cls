@@ -27,4 +27,32 @@ public with sharing class ContactHelper {
             }
         }
     }
+
+    public static void defaultEmail(List<Contact> contacts){
+        for(Integer i = 0; i < contacts.size(); i++){
+        if(String.isBlank(contacts.get(i).Email)){
+            contacts.get(i).Email = 'defaultemail@gmail.com'; 
+        }
+        }
+    } 
+
+    public static void updateAccountPhone(List<Contact> contacts){
+        Set<Id> accountIds = new Set<Id>();
+        for(Contact contact : contacts){
+            if(contact.AccountId != null){
+                accountIds.add(contact.AccountId);
+            }
+        }
+        List<Account> accounts = [SELECT Email FROM Account WHERE ID IN :accountIds];
+
+        for(Account account : accounts){
+            for(Contact contact : contacts){
+                if(contact.AccountId == account.Id){
+                    account.Email = contact.Email;
+                }
+            }
+        }
+        Database.update(accounts);
+    }
+
 }
