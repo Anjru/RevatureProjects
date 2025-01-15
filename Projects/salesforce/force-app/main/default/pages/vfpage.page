@@ -12,12 +12,13 @@
 </apex:page>
 
 <!-- Challenge 1 codes -->
- <!--<apex:page StandardController="Account"> -->
-<!-- <h1>The current account is : {!account.name}</h1> -->
+<!-- <apex:page StandardController="Account">
+<h1>The current account is : {!account.name}</h1>
+</apex:pageBlock> -->
 
 <!-- Challenge 2 -->
- <!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page> -->
-   <!-- <apex:pageBlock title="Viewing Accounts">
+ <!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page>
+   <apex:pageBlock title="Viewing Accounts">
         <apex:form id="theForm">
             <apex:pageBlockSection >
                 <apex:dataList var="a" value="{!accounts}" type="1">
@@ -29,15 +30,17 @@
                 <apex:commandLink action="{!next}">Next</apex:commandlink>
             </apex:panelGrid>
         </apex:form> 
-    </apex:pageBlock> -->
+    </apex:page> -->
 
 <!-- Challenge 3 -->
  <!-- <apex:page Controller="AccountCustomController"> -->
-   <!--<h1 class="header">The static account is : {!account.name}</h1> <!-- we should see joe -->
+   <!-- <h1 class="header">The static account is : {!account.name}</h1> we should see joe -->
+ <!-- </apex:page> -->
 
 <!-- Challenge 5 -->
 <!-- <apex:page StandardController="Account" standardStylesheets="false" showHeader="false">
-    <apex:stylesheet value="{!$Resource.filestyle}"/> -->
+    <apex:stylesheet value="{!$Resource.filestyle}"/> 
+    </apex:page>-->
 
 <!-- Challenge 6 -->
 <!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
