@@ -1,19 +1,23 @@
-<apex:page StandardController="Account" standardStylesheets="false" showHeader="false">
-<apex:stylesheet value="{!$Resource.filestyle}"/>
-<!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page> -->
-  <!-- Begin Default Content REMOVE THIS -->
-  <!-- <h1>The current account is : {!account.name}</h1> -->
-  <!--<h1 class="header">The static account is : {!account.name}</h1> <!-- we should see joe -->
+<apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
 
-  <apex:form>
-  <apex:commandButton action="{!save}" value="Greet" id="greet"/>
-</apex:form>
+    <apex:form>
+        <apex:inputText value="{!userInput}" Label="Enter Account"/>
+        <apex:commandButton action="{!displayAccount}" value="Enter" rerender="greetPanel"/>
+    </apex:form>
 
-<apex:outputPanel id="greet">
-    <apex:outputText value="Hello, {!Account.Name}" rendered="{!NOT(ISBLANK(Account.Name))}"/>
-</apex:outputPanel>
+    <apex:outputPanel id="greetPanel">
+        <apex:outputText value="Account {!accountInput[0].name}" rendered="{!showGreeting}"/>
+    </apex:outputPanel>
+</apex:page>
 
-  <!-- <apex:pageBlock title="Viewing Accounts">
+<!-- Challenge 1 codes -->
+ <!--<apex:page StandardController="Account"> -->
+<!-- <h1>The current account is : {!account.name}</h1> -->
+
+<!-- Challenge 2 -->
+ <!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page> -->
+   <!-- <apex:pageBlock title="Viewing Accounts">
         <apex:form id="theForm">
             <apex:pageBlockSection >
                 <apex:dataList var="a" value="{!accounts}" type="1">
@@ -26,4 +30,38 @@
             </apex:panelGrid>
         </apex:form> 
     </apex:pageBlock> -->
-</apex:page>
+
+<!-- Challenge 3 -->
+ <!-- <apex:page Controller="AccountCustomController"> -->
+   <!--<h1 class="header">The static account is : {!account.name}</h1> <!-- we should see joe -->
+
+<!-- Challenge 5 -->
+<!-- <apex:page StandardController="Account" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/> -->
+
+<!-- Challenge 6 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+
+    <apex:form>
+        <apex:commandButton action="{!greet}" value="Greet" id="greetButton" rerender="greetPanel"/>
+    </apex:form>
+
+    <apex:outputPanel id="greetPanel">
+        <apex:outputText value="Hello, {!accounts[0].name}" rendered="{!showGreeting}"/>
+    </apex:outputPanel>
+</apex:page> -->
+
+<!-- Challenge 7 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+
+    <apex:form>
+        <apex:inputText value="{!userInput}" Label="Enter Account"/>
+        <apex:commandButton action="{!displayAccount}" value="Enter" rerender="greetPanel"/>
+    </apex:form>
+
+    <apex:outputPanel id="greetPanel">
+        <apex:outputText value="Account {!accountInput[0].name}" rendered="{!showGreeting}"/>
+    </apex:outputPanel>
+</apex:page> -->
