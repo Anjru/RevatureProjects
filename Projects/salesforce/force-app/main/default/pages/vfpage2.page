@@ -1,0 +1,16 @@
+<apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+    <apex:form>
+        <apex:inputText value="{!userInput2}" Label="Filter Account"/>
+        <apex:commandButton action="{!filterAccount2}" value="Filter"/>
+    </apex:form>
+    <apex:pageBlock title="Viewing Contacts">
+      <apex:form id="theForm">
+          <apex:pageBlockSection >
+              <apex:dataList var="con" value="{!accountContactFilterString}" type="1">
+                  {!con}
+              </apex:dataList>
+          </apex:pageBlockSection>
+      </apex:form>
+  </apex:pageBlock>
+</apex:page>

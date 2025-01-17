@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
+        <apexClass>AccountCustomController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AccountHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -26,6 +30,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Vehicle</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>VisualforceExtensions</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>VisualforceExtentions</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -148,6 +160,10 @@
     </objectPermissions>
     <pageAccesses>
         <apexPage>vfpage</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>vfpage2</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <tabVisibilities>

@@ -43,12 +43,12 @@ public with sharing class ContactHelper {
                 accountIds.add(contact.AccountId);
             }
         }
-        List<Account> accounts = [SELECT Email FROM Account WHERE ID IN :accountIds];
-
+        List<Account> accounts = [SELECT Phone FROM Account WHERE ID IN :accountIds];
+        
         for(Account account : accounts){
             for(Contact contact : contacts){
                 if(contact.AccountId == account.Id){
-                    account.Email = contact.Email;
+                    account.Phone = contact.Phone;
                 }
             }
         }

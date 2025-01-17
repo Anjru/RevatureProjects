@@ -1,14 +1,49 @@
-<apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
-    <apex:stylesheet value="{!$Resource.filestyle}"/>
-
-    <apex:form>
-        <apex:inputText value="{!userInput}" Label="Enter Account"/>
-        <apex:commandButton action="{!displayAccount}" value="Enter" rerender="greetPanel"/>
-    </apex:form>
-
-    <apex:outputPanel id="greetPanel">
-        <apex:outputText value="Account {!accountInput[0].name}" rendered="{!showGreeting}"/>
-    </apex:outputPanel>
+<apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions">
+    <apex:stylesheet value="{!$Resource.filestyle}" />
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="form">
+            <apex:inputText value="{!userInput}" label="Filter Account">
+                <apex:actionSupport event="onkeyup" immediate="true" action="{!filterAccount}" reRender="outputPanel" />
+            </apex:inputText>
+            <apex:outputPanel id="outputPanel">
+                <apex:pageBlockSection>
+                    <apex:repeat value="{!keys}" var="key">
+                        <apex:outputPanel rendered="{!key != null && mapAccCon[key] != null}">
+                            <h3>Account Name:
+                                <apex:outputField value="{!key.Name}">
+                                    <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                </apex:outputField>
+                            </h3>
+                            <!-- Iterate through the Contacts for each Account -->
+                            <apex:repeat value="{!mapAccCon[key.Id]}" var="contact">
+                                <div>
+                                    <strong>Contact:</strong>
+                                    <apex:outputField value="{!contact.Name}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <div>
+                                    <strong>Phone:</strong>
+                                    <apex:outputField value="{!contact.Phone}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <div>
+                                    <strong>Email:</strong>
+                                    <apex:outputField value="{!contact.Email}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <hr/>
+                                <!-- Optional: Add a horizontal rule for separation -->
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:commandButton id="saveButton" value="Save" action="{!quicksave}" />
+        </apex:form>
+    </apex:pageBlock>
 </apex:page>
 
 <!-- Challenge 1 codes -->
@@ -17,7 +52,7 @@
 </apex:page> -->
 
 <!-- Challenge 2 -->
- <!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page>
+<!-- <apex:page standardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions"></apex:page>
    <apex:pageBlock title="Viewing Accounts">
         <apex:form id="theForm">
             <apex:pageBlockSection >
@@ -30,12 +65,13 @@
                 <apex:commandLink action="{!next}">Next</apex:commandlink>
             </apex:panelGrid>
         </apex:form> 
+    </apex:pageBlock>
     </apex:page> -->
 
 <!-- Challenge 3 -->
- <!-- <apex:page Controller="AccountCustomController"> -->
-   <!-- <h1 class="header">The static account is : {!account.name}</h1> we should see joe -->
- <!-- </apex:page> -->
+<!-- <apex:page Controller="AccountCustomController"> -->
+<!-- <h1 class="header">The static account is : {!account.name}</h1> we should see joe -->
+<!-- </apex:page> -->
 
 <!-- Challenge 5 -->
 <!-- <apex:page StandardController="Account" standardStylesheets="false" showHeader="false">
@@ -67,4 +103,130 @@
     <apex:outputPanel id="greetPanel">
         <apex:outputText value="Account {!accountInput[0].name}" rendered="{!showGreeting}"/>
     </apex:outputPanel>
+</apex:page> -->
+
+<!-- Challenge 8 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="theForm">
+            <apex:pageBlockSection >
+                <apex:dataList var="con" value="{!contacts}" type="1">
+                    {!con.name}
+                </apex:dataList>
+            </apex:pageBlockSection>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page> -->
+
+<!-- Challenge 9 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="theForm">
+            <apex:pageBlockSection>
+                <apex:dataList var="list" value="{!accountContactListString}" type="1">
+                    {!list}
+                </apex:dataList>
+            </apex:pageBlockSection>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page> -->
+
+<!-- Challenge 10  -->
+<!-- on vfpage2.page -->
+
+<!-- Challenge 11 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions" standardStylesheets="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="form">
+            <apex:inputText value="{!userInput}" label="Filter Account">
+                <apex:actionSupport event="onkeyup" immediate="true" action="{!filterAccount}" reRender="outputPanel"/>
+            </apex:inputText>
+            <apex:outputPanel id="outputPanel">
+                <apex:pageBlockSection>
+                    <apex:dataList var="list" value="{!accountContactListString}" type="1">
+                        {!list}
+                    </apex:dataList>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page> -->
+
+<!-- Challenge 12 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions">
+    <apex:stylesheet value="{!$Resource.filestyle}"/>
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="form">
+            <apex:inputText value="{!userInput}" label="Filter Account">
+                <apex:actionSupport event="onkeyup" immediate="true" action="{!filterAccount}" reRender="outputPanel"/>
+            </apex:inputText>
+            <apex:outputPanel id="outputPanel">
+                <apex:pageBlockSection>
+                    <apex:repeat value="{!accounts}" var="acc">
+                        <apex:outputField value="{!acc.name}">
+                            <apex:inlineEditSupport event="onclick"
+                            showOnEdit="form:saveButton" hideOnEdit="editLink"/>
+                        </apex:outputField>
+                    </apex:repeat>
+                    <apex:commandButton id="saveButton" value="Save" action="{!quicksave}"/>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+        </apex:form>
+    </apex:pageBlock>
+</apex:page> -->
+
+<!-- Challenge 13 -->
+<!-- <apex:page StandardController="Account" recordSetVar="accounts" extensions="VisualforceExtensions">
+    <apex:stylesheet value="{!$Resource.filestyle}" />
+    <apex:pageBlock title="Viewing Contacts">
+        <apex:form id="form">
+            <apex:inputText value="{!userInput}" label="Filter Account">
+                <apex:actionSupport event="onkeyup" immediate="true" action="{!filterAccount}" reRender="outputPanel" />
+            </apex:inputText>
+            <apex:outputPanel id="outputPanel">
+                <apex:pageBlockSection>
+                    <apex:repeat value="{!keys}" var="key">
+                        <apex:outputPanel rendered="{!key != null && mapAccCon[key] != null}">
+                            <h3>Account Name:
+                                <apex:outputField value="{!key.Name}">
+                                    <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                </apex:outputField>
+                            </h3>
+                            <!-- Iterate through the Contacts for each Account -->
+                            <!--
+                            <apex:repeat value="{!mapAccCon[key.Id]}" var="contact">
+                                <div>
+                                    <strong>Contact:</strong>
+                                    <apex:outputField value="{!contact.Name}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <div>
+                                    <strong>Phone:</strong>
+                                    <apex:outputField value="{!contact.Phone}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <div>
+                                    <strong>Email:</strong>
+                                    <apex:outputField value="{!contact.Email}">
+                                        <apex:inlineEditSupport event="onclick" showOnEdit="form:saveButton" hideOnEdit="editLink" />
+                                    </apex:outputField>
+                                </div>
+                                <hr/>
+                                <!-- Optional: Add a horizontal rule for separation -->
+                                <!--
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:repeat>
+
+                    <apex:commandButton id="saveButton" value="Save" action="{!quicksave}" />
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+        </apex:form>
+    </apex:pageBlock>
 </apex:page> -->
