@@ -1,0 +1,5 @@
+<apex:page >
+  <apex:outputPanel>
+    <a href="{!URLFOR($Page.VisualForce)}" class="btn">Back</a>
+  </apex:outputPanel>
+</apex:page>

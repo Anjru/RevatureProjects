@@ -1,0 +1,7 @@
+<apex:page>
+  <apex:outputPanel>
+    <a href="{!URLFOR($Page.AccountLeadPage)}" class="btn">Account Lead Page</a>
+    <a href="{!URLFOR($Page.ContactPage)}" class="btn">Contact Page</a>
+    <a href="{!URLFOR($Page.OpportunityPage)}" class="btn">Opportunity Page</a>
+  </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,75 @@
+<apex:page standardController="Account" recordSetVar="accounts" extensions="ContactExtension">
+  <!-- Navigate to Main page -->
+  <apex:outputPanel>
+    <a href="{!URLFOR($Page.VisualForce)}" class="btn">Back</a>
+  </apex:outputPanel>
+
+  <!-- View, Create, Delete Contacts -->
+
+  <apex:pageBlock title="Contacts">
+    <!-- View Customer Contacts -->
+    <apex:form>
+      <apex:pageBlockTable value="{!customerContacts}" var="contact">
+        <apex:column headerValue="Customer Contacts">
+          <apex:outputField value="{!contact.Name}" />
+        </apex:column>
+
+        <apex:column headerValue="Actions">
+          <apex:commandLink value="Delete" action="{!deleteRecord}">
+            <apex:param name="recordId" value="{!contact.Id}" assignTo="{!recordIdToDelete}" />
+          </apex:commandLink>
+        </apex:column>
+    
+    </apex:pageBlockTable>
+  </apex:form>
+
+    <!-- Create Customer Contact -->
+    <apex:form>
+      <!-- Command Button to Toggle the Input Field -->
+      <apex:commandButton value="Create" action="{!toggleInputField}" rerender="formSection" />
+
+      <!-- Section with Conditional Rendering -->
+      <apex:outputPanel id="formSection">
+        <apex:outputLabel value="Enter Last Name:" for="inputField" rendered="{!showInput}" />
+        <apex:inputText id="inputField" value="{!lastNameInputCustomer}" rendered="{!showInput}" />
+        <apex:commandButton value="Submit" action="{!createCustomerContact}" rendered="{!showInput}" rerender="formSection, customerContacts, messages"
+        />
+      </apex:outputPanel>
+    </apex:form>
+
+    <!-- Messages -->
+    <apex:pageMessages id="messages" />
+
+    <!-- View Technician Contacts -->
+     <apex:form>
+    <apex:pageBlockTable value="{!technicianContacts}" var="contact">
+      <apex:column headerValue="Technician Contacts">
+        <apex:outputField value="{!contact.Name}" />
+      </apex:column>
+
+      <apex:column headerValue="Actions">
+          <apex:commandLink value="Delete" action="{!deleteRecord}">
+            <apex:param name="recordId" value="{!contact.Id}" assignTo="{!recordIdToDelete}" />
+          </apex:commandLink>
+        </apex:column>
+    </apex:pageBlockTable>
+  </apex:form>
+
+    <!-- Create Customer Contact -->
+    <apex:form>
+      <!-- Command Button to Toggle the Input Field -->
+      <apex:commandButton value="Create" action="{!toggleInputField}" rerender="formSection2" />
+
+      <!-- Section with Conditional Rendering -->
+      <apex:outputPanel id="formSection2">
+        <apex:outputLabel value="Enter Last Name:" for="inputField2" rendered="{!showInput}" />
+        <apex:inputText id="inputField2" value="{!lastNameInputTechnician}" rendered="{!showInput}" />
+        <apex:commandButton value="Submit" action="{!createTechnicianContact}" rendered="{!showInput}" rerender="formSection2, technicianContacts, messages2"
+        />
+      </apex:outputPanel>
+    </apex:form>
+
+    <!-- Messages -->
+    <apex:pageMessages id="messages2" />
+  </apex:pageBlock>
+</apex:page>
