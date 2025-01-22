@@ -1,19 +1,21 @@
 <aura:component controller="MyAuraController">
-    <aura:registerEvent name="compEvent" type="c:AuraEvent"/>
-    name
+    <aura:attribute name="inputName" type="String"/>
+    <aura:attribute name="inputRating" type="String"/>
+    <aura:attribute name="inputEmployees" type="String"/>
+    <aura:attribute name="inputAnnualRevenue" type="String"/>
+
+    Name:
     <lightning:input name="InputText" type="text" aura:id="inputName"/>
 
-    rating
+    Rating:
     <lightning:input name="InputText" type="text" aura:id="inputRating"/>
 
-    employees
+    Employees:
     <lightning:input name="InputText" type="text" aura:id="inputEmployees"/>
 
-    annual revenue
+    Annual Revenue:
     <lightning:input name="InputText" type="text" aura:id="inputAnnualRevenue"/>
 
-    <lightning:button label="Display input" onclick="{!c.helperMethod}"/>
-
-    <lightning:notificationsLibrary aura:id="notifLib"/>
-    <lightning:button name="toast" label="Show Toast" onclick="{!c.handleShowToast}"/>
+    <lightning:button label="Create Account" onclick="{!c.handlerUserInput}"/>
+    <lightning:notificationsLibrary aura:id="notifLib" />
 </aura:component>

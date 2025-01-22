@@ -1,11 +1,5 @@
 ({
-    helperMethod : function(component, event, helper) {
-        helper.helperMethod(component, event);
+    handlerUserInput: function (component, event, helper) {
+        helper.handlerUserInput(component, event);
     }
-})
-
-({
-    handleShowToast : function(component, event, helper) {
-        helper.handleShowToast(component, event);
-    }
-})
+});

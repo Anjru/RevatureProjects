@@ -8,7 +8,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     
     <!-- Can use dot notation -->
-    {!oppList[0].name}
-    {!oppList[1].name}
-    {!oppList[2].name}
+    {!v.oppList[0].name}
+    {!v.oppList[1].name}
+    {!v.oppList[2].name}
 </aura:component>
