@@ -1,0 +1,6 @@
+<aura:component>
+    <!-- <aura:handler name="compEvent" event="c:AuraEvent" action="{!c.handleMessage}"/>
+    <aura:attribute name "message" type="string"/>
+    {!v.message}
+    <c:AuraChallenge3/> -->
+</aura:component>

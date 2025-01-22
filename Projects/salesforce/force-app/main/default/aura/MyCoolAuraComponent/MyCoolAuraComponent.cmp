@@ -1,0 +1,14 @@
+<aura:component implements="flexipage:availableForRecordHome, force:hasRecordId" controller="MyAuraController">
+    <!-- This is here implicitly <aura:attribute name="recordId" type="Id"/> -->
+    {!v.recordId}
+    
+    <!-- need [] for storing list -->
+    <aura:attribute name="oppList" type="Opportunity[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Can use dot notation -->
+    {!oppList[0].name}
+    {!oppList[1].name}
+    {!oppList[2].name}
+</aura:component>

@@ -1,5 +1,56 @@
-<apex:page >
+<apex:page standardController="WorkOrder" recordSetVar="workorders" extensions="WorkOrderExtension">
+  <!-- Navigate to Main page -->
   <apex:outputPanel>
     <a href="{!URLFOR($Page.VisualForce)}" class="btn">Back</a>
   </apex:outputPanel>
+
+  <!-- View, Create, Delete Work Orders -->
+  <apex:pageBlock title="Work Orders">
+    <!-- View Work Orders -->
+    <apex:form>
+      <apex:pageBlockTable value="{!workorders}" var="workorder">
+        <apex:column headerValue="Work Orders">
+          <apex:outputField value="{!workorder.Subject}" />
+        </apex:column>
+
+        <apex:column headerValue="Actions">
+          <apex:commandLink value="Delete" action="{!deleteWorkOrderRecord}">
+            <apex:param name="recordId" value="{!workorder.Id}" assignTo="{!recordIdToDelete}" />
+          </apex:commandLink>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:form>
+
+    <!-- Create Work Order -->
+    <apex:form>
+      <!-- Command Button to Toggle the Input Field -->
+      <apex:commandButton value="Create" action="{!toggleInputField}" rerender="formSection" />
+
+      <!-- Section with Conditional Rendering -->
+      <apex:outputPanel id="formSection">
+        <apex:outputLabel value="Enter Subject:" for="subjectField" rendered="{!showInput}" />
+        <apex:inputText id="subjectField" value="{!subjectInputWorkOrder}" rendered="{!showInput}" />
+
+        <apex:outputLabel value="Select Status:" for="statusField" rendered="{!showInput}" />
+        <apex:selectList id="statusField" value="{!statusInputWorkOrder}" rendered="{!showInput}" size="1">
+          <apex:selectOptions value="{!statusOptions}" />
+        </apex:selectList>
+
+        <apex:outputLabel value="Select Account:" for="accountField" rendered="{!showInput}" />
+        <apex:selectList id="accountField" value="{!accountIdInputWorkOrder}" rendered="{!showInput}" size="1">
+          <apex:selectOptions value="{!accountOptions}" />
+        </apex:selectList>
+
+        <apex:outputLabel value="Select Technician Contact:" for="contactField" rendered="{!showInput}" />
+        <apex:selectList id="contactField" value="{!contactIdInputWorkOrder}" rendered="{!showInput}" size="1">
+          <apex:selectOptions value="{!technicianContactOptions}" />
+        </apex:selectList>
+
+        <apex:commandButton value="Submit" action="{!createWorkOrder}" rendered="{!showInput}" rerender="formSection, workorders, messages" />
+      </apex:outputPanel>
+    </apex:form>
+
+    <!-- Messages -->
+    <apex:pageMessages id="messages" />
+  </apex:pageBlock>
 </apex:page>

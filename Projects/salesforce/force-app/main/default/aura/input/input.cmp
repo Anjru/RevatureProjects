@@ -1,0 +1,6 @@
+<aura:component>
+    <aura:attribute name="input" type="String"/>
+    {v.input}
+    <lightning:input name="InputText" type="text" aura:id="userInput"/>
+    <lightning:button label="Display input" onclick="{!c.myAction}"/>
+</aura:component>

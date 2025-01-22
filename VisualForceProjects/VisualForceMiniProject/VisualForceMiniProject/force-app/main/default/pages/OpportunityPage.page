@@ -1,5 +1,40 @@
-<apex:page >
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="OpportunityExtension">
+  <!-- Navigate to Main page -->
   <apex:outputPanel>
     <a href="{!URLFOR($Page.VisualForce)}" class="btn">Back</a>
   </apex:outputPanel>
+
+  <!-- View, Create, Delete Opportunities -->
+  <apex:pageBlock title="Opportunities">
+    <!-- View Opportunities -->
+    <apex:form>
+      <apex:pageBlockTable value="{!opportunities}" var="opportunity">
+        <apex:column headerValue="Opportunities">
+          <apex:outputField value="{!opportunity.Name}" />
+        </apex:column>
+
+        <apex:column headerValue="Actions">
+          <apex:commandLink value="Delete" action="{!deleteOpportunityRecord}">
+            <apex:param name="recordId" value="{!opportunity.Id}" assignTo="{!recordIdToDelete}" />
+          </apex:commandLink>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:form>
+
+    <!-- Create Opportunity -->
+    <apex:form>
+      <!-- Command Button to Toggle the Input Field -->
+      <apex:commandButton value="Create" action="{!toggleInputField}" rerender="formSection" />
+
+      <!-- Section with Conditional Rendering -->
+      <apex:outputPanel id="formSection">
+        <apex:outputLabel value="Enter Name:" for="inputField" rendered="{!showInput}" />
+        <apex:inputText id="inputField" value="{!nameInputOpportunity}" rendered="{!showInput}" />
+        <apex:commandButton value="Submit" action="{!createOpportunity}" rendered="{!showInput}" rerender="formSection, opportunities, messages" />
+      </apex:outputPanel>
+    </apex:form>
+
+    <!-- Messages -->
+    <apex:pageMessages id="messages" />
+  </apex:pageBlock>
 </apex:page>

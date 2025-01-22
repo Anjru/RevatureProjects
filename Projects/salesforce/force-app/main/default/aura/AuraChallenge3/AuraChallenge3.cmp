@@ -1,0 +1,19 @@
+<aura:component controller="MyAuraController">
+    <aura:registerEvent name="compEvent" type="c:AuraEvent"/>
+    name
+    <lightning:input name="InputText" type="text" aura:id="inputName"/>
+
+    rating
+    <lightning:input name="InputText" type="text" aura:id="inputRating"/>
+
+    employees
+    <lightning:input name="InputText" type="text" aura:id="inputEmployees"/>
+
+    annual revenue
+    <lightning:input name="InputText" type="text" aura:id="inputAnnualRevenue"/>
+
+    <lightning:button label="Display input" onclick="{!c.helperMethod}"/>
+
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:button name="toast" label="Show Toast" onclick="{!c.handleShowToast}"/>
+</aura:component>
