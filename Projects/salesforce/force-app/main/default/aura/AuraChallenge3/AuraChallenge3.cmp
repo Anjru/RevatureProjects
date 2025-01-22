@@ -1,8 +1,10 @@
-<aura:component controller="MyAuraController">
+<aura:component controller="MyAuraController" implements="flexipage:availableForAllPageTypes">
     <aura:attribute name="inputName" type="String"/>
     <aura:attribute name="inputRating" type="String"/>
     <aura:attribute name="inputEmployees" type="String"/>
     <aura:attribute name="inputAnnualRevenue" type="String"/>
+
+    <lightning:notificationsLibrary aura:id="notifLib" />
 
     Name:
     <lightning:input name="InputText" type="text" aura:id="inputName"/>
@@ -17,5 +19,5 @@
     <lightning:input name="InputText" type="text" aura:id="inputAnnualRevenue"/>
 
     <lightning:button label="Create Account" onclick="{!c.handlerUserInput}"/>
-    <lightning:notificationsLibrary aura:id="notifLib" />
+    
 </aura:component>

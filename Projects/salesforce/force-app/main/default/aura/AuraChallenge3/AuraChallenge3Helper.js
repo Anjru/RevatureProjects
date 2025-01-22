@@ -22,15 +22,22 @@
 
             if (state === 'SUCCESS') {
                 console.log('Account created successfully!');
-                var toastEvent = $A.get('e.force:showToast');
-                if (toastEvent) {
-                    toastEvent.setParams({
-                        title: 'Success',
-                        message: 'Account created successfully!',
-                        type: 'success'
-                    });
-                    toastEvent.fire();
-                }
+
+                component.find('notifLib').showNotice({
+                    "variant":"Success",
+                    "header":"Sucess!",
+                    "message":"The record " + component.find('inputName').get('v.value') +' updated'
+                });
+                
+                // var toastEvent = $A.get('e.force:showToast');
+                // if (toastEvent) {
+                //     toastEvent.setParams({
+                //         title: 'Success',
+                //         message: 'Account created successfully!',
+                //         type: 'success'
+                //     });
+                //     toastEvent.fire();
+                // }
             } else if (state === 'ERROR') {
                 var errors = response.getError();
                 console.error('Apex error:', errors);
@@ -50,7 +57,7 @@
         
         );
 
-        console.log("Enqueueing action...");
+        console.log('Enqueueing action...');
         $A.enqueueAction(action);
     }
 });
