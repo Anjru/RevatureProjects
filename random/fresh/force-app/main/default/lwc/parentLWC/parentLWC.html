@@ -1,0 +1,6 @@
+<template>
+    <lightning-button label="Expose Child" onclick={handleInput}></lightning-button>
+    <template lwc:if={render}>
+        <c-lwc-example></c-lwc-example>
+    </template>
+</template>

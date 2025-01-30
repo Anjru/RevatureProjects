@@ -1,3 +1,6 @@
-<aura:application implements="flexipage:availableForAllPageTypes">
-    <c:AuraChallenge3/>
+<aura:application implements="flexipage:availableForAllPageTypes" extends="force:slds">
+    <!-- <c:AuraChallenge3/> -->
+    <!-- <c:input/> -->
+    <c:contacts/>
+    <c:AccountLead/>
 </aura:application>

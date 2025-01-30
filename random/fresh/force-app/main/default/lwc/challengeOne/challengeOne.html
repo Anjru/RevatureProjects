@@ -1,0 +1,14 @@
+<template>
+    <lightning-input 
+      type="text"
+      label="Input" 
+      lwc:ref="inputField"
+    ></lightning-input>
+    <lightning-button label="Add" variant="brand" onclick={addItem}>
+    </lightning-button>
+
+    <template for:each={items} for:item="item">
+        <li key={item}> {item} </li>
+    </template>
+
+</template>

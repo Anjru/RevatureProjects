@@ -42,4 +42,15 @@ public with sharing class MyAuraController {
     public static List<Opportunity> getBig3AccountOpps(String id) {
         return [SELECT Name FROM Opportunity WHERE AccountId = :id ORDER BY Amount DESC LIMIT 3];
     }
+
+    @AuraEnabled
+    public static List<Account> getAllAccounts(){
+        try {
+            return [SELECT Name, Rating, Industry FROM Account];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    
 }

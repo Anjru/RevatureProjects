@@ -1,0 +1,14 @@
+<template>
+
+    <!-- <template> -->
+        <lightning-datatable 
+            columns={columns} 
+            key-field="Id" 
+            data={caseList.data} 
+            hide-checkbox-column="true">
+        </lightning-datatable>
+    <!-- </template> -->
+
+    <c-case-form> oncasecreate = {handleNewCase}</c-case-form>
+
+</template>

@@ -1,0 +1,7 @@
+<template>
+
+    <template lwc:if={visible}>{message}</template>
+    <lightning-input label="Input" lwc:ref="inputField" onchange={update}></lightning-input>
+    <lightning-button label="toggle" onclick={toggle}></lightning-button>
+
+</template>

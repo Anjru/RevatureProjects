@@ -7,10 +7,10 @@ trigger AccountTrigger on Account (before insert, before update, before delete, 
 
         }
         when BEFORE_DELETE {
-            AccountHelper.preventDeletion(Trigger.new);
+            //AccountHelper.preventDeletion(Trigger.new);
         }
         when AFTER_INSERT {
-            AccountHelper.createContact(Trigger.new);
+            //AccountHelper.createContact(Trigger.new);
         }
         when AFTER_UPDATE{
 

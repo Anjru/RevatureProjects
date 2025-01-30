@@ -24,8 +24,8 @@
                 console.log('Account created successfully!');
 
                 component.find('notifLib').showNotice({
-                    "variant":"Success",
-                    "header":"Sucess!",
+                    "variant":"Success", //Provides a color variant for successes
+                    "header":"Sucess!", //toasts use titles
                     "message":"The record " + component.find('inputName').get('v.value') +' updated'
                 });
                 

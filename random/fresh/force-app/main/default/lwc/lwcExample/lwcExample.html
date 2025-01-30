@@ -1,0 +1,18 @@
+<template>
+    {message}
+    <lightning-input label="input" type="text" lwc:ref="input"></lightning-input>
+    <lightning-button label="display" onclick={handleInput}></lightning-button>
+
+    <ul>
+        <template for:each={todos} for:item='todo'>
+            <li key={todo}> {todo} </li>
+        </template>
+    </ul>
+
+    <!-- <ul>
+        <template iterator:it={todos}>
+            <p key={it.value.id}> {it.value} </p>
+        </template>
+    </ul> -->
+
+</template>

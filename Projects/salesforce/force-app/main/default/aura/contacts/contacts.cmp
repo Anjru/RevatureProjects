@@ -1,0 +1,28 @@
+<aura:component implements="flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" controller="AuraExpController">
+    <aura:attribute name="contactList" type="Contact[]"/>
+    <aura:attribute name="selectedContactList" type="Contact[]"/>
+    <aura:attribute name="columns" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card>
+        <lightning:datatable
+            columns="{!v.columns}"
+            data="{!v.contactList}"
+            keyField="Id"
+            hideCheckboxColumn="false"
+            onrowselection="{!c.handleRowSelection}"/>
+    </lightning:card>
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+
+    Create Contact
+    <lightning:input label="First Name" name="InputText" type="text" aura:id="firstName"/>
+    <lightning:input label="Last Name" name="InputText" type="text" aura:id="lastName"/>
+    <lightning:input label="Phone" name="InputText" type="text" aura:id="phone"/>
+    
+    <lightning:button label="Create Contact" onclick="{!c.handleCreateContact}"/>
+    <!-- <lightning:button label="Create Account" onclick="{!c.handlerUserInput}"/> -->
+    <lightning:button label="Delete Contact" onclick="{!c.handleDelete}"/>
+
+</aura:component>

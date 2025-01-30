@@ -8,7 +8,8 @@ public with sharing class ClassDeliveryHelper {
         // User u = [SELECT LastName FROM USER WHERE ProfileId =: p.Id];
         // System.runAs(u){
 
-        // }
+        // 
+        }
         
         Class_Delivery__c cd = new Class_Delivery__c();
         Database.insert(cd); 

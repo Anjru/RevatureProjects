@@ -1,5 +1,10 @@
 ({
     myAction : function(component, event, helper) {
-        inputHelper.helperMethod(component, event);
+        helper.helperMethod(component, event);
+    },
+
+    doInit : function(component, event, helper){
+        helper.doInit(component,event);
     }
+
 })

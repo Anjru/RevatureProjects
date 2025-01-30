@@ -1,0 +1,14 @@
+<apex:page controller="PokemonController">
+    <apex:form>
+        <apex:outputLabel for="pokemonInput" value="Enter Pokémon Name" />
+        <apex:inputText id="pokemonInput" value="{!pokemonName}" />
+        <apex:commandButton action="{!findPokemon}" value="Find Pokémon" />
+        <apex:pageMessages />
+    </apex:form>
+    <apex:outputPanel rendered="{!pokemonFound}">
+        <h2>Pokémon Details</h2>
+        <p><strong>Name:</strong> {!pokemonDetails['name']}</p>
+        <p><strong>Image:</strong></p>
+        <img src="{!pokemonDetails['imageUrl']}" alt="{!pokemonDetails['name']}"/>
+    </apex:outputPanel>
+</apex:page>

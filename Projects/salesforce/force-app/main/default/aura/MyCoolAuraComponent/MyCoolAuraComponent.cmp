@@ -1,14 +1,40 @@
-<aura:component implements="flexipage:availableForRecordHome, force:hasRecordId" controller="MyAuraController">
-    <!-- This is here implicitly <aura:attribute name="recordId" type="Id"/> -->
+<aura:component implements="flexipage:availableForRecordHome, forceCommunity:availableForAllPageTypes, force:hasRecordId, flexipage:availableForAllPageTypes" controller="MyAuraController">
+    <!-- recordId is implicitly available when using force:hasRecordId -->
     {!v.recordId}
-    
-    <!-- need [] for storing list -->
-    <aura:attribute name="oppList" type="Opportunity[]"/>
 
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- Attribute to store the list of Opportunities -->
+    <aura:attribute name="accList" type="Account[]" />
+    <aura:attribute name="columns" type="Object"/>
+
+    <!-- Fires when the component is initialized -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card>
+        <lightning:datatable
+            columns="{v.columns}"
+            data="{!v.accList}"
+            keyField="Id"
+            hideCheckboxColumn="false"/>
+    </lightning:card>
+
+
+    <!-- Iterate over the Opportunity list -->
+    <aura:iteration items="{!v.accList}" var="acc">
+        <!-- Display Opportunity Name -->
+        <div>{!acc.Name}</div>
+    </aura:iteration>
+
+
+        <!-- Lightning Card with Record Edit Form for each Opportunity -->
+        <lightning:card>
+            <lightning:recordEditForm objectApiName="Account" onsuccess="{!c.refreshTable}">
+                <lightning:inputField fieldName="Name"/>
+                <lightning:inputField fieldName="Rating" />
+                <lightning:inputField fieldName="Industy" />
+
+                <!-- Submit button for each record -->
+                <lightning:button type="submit" name="update" label="Update" />
+            </lightning:recordEditForm>
+        </lightning:card>
     
-    <!-- Can use dot notation -->
-    {!v.oppList[0].name}
-    {!v.oppList[1].name}
-    {!v.oppList[2].name}
 </aura:component>

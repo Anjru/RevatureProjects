@@ -10,7 +10,7 @@ trigger ContactTrigger on Contact (before insert, before update, before delete, 
 
         }
         when AFTER_UPDATE{
-            ContactHelper.updateAccountPhone(Trigger.new);
+            //ContactHelper.updateAccountPhone(Trigger.new);
         }
     }
 }

@@ -1,0 +1,55 @@
+<aura:component implements="flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" controller="AuraExpController">
+    <aura:attribute name="accountList" type="Account[]"/>
+    <aura:attribute name="selectedAccountList" type="Account[]"/>
+    <aura:attribute name="columns" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card>
+        <lightning:datatable
+            columns="{!v.columns}"
+            data="{!v.accountList}"
+            keyField="Id"
+            hideCheckboxColumn="false"
+            onrowselection="{!c.handleRowSelection}"/>
+    </lightning:card>
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+
+    Create Account
+    <lightning:input label="Name" name="InputText" type="text" aura:id="name"/>
+    <lightning:input label="Phone" name="InputText" type="text" aura:id="phone"/>
+    
+    <lightning:button label="Create Account" onclick="{!c.handleCreateAccount}"/>
+    <!-- <lightning:button label="Create Account" onclick="{!c.handlerUserInput}"/> -->
+    <lightning:button label="Delete Account" onclick="{!c.handleDelete}"/>
+
+
+    <!-- /////////////////////////////////////////////////// -->
+    <aura:attribute name="LeadList" type="Lead[]"/>
+    <aura:attribute name="selectedLeadList" type="Lead[]"/>
+    <aura:attribute name="columnsLead" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card>
+        <lightning:datatable
+            columns="{!v.columns}"
+            data="{!v.leadList}"
+            keyField="Id"
+            hideCheckboxColumn="false"
+            onrowselection="{!c.handleRowSelection}"/>
+    </lightning:card>
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+
+    Create Lead
+    <lightning:input label="Last Name" name="InputText" type="text" aura:id="name"/>
+    <lightning:input label="Company" name="InputText" type="text" aura:id="company"/>
+    
+    <lightning:button label="Create Lead" onclick="{!c.handleCreatelead}"/>
+    <!-- <lightning:button label="Create Account" onclick="{!c.handlerUserInput}"/> -->
+    <lightning:button label="Delete Lead" onclick="{!c.handleDeleteLead}"/>
+
+
+</aura:component>

@@ -28,3 +28,9 @@ System.debug('My name is ' + tempvar);
 //System.debug(Calculator.calculate('(10.5 * 2 - 10) * 0.5 '));
 //Vehicle test = new Vehicle();
 //test.toString();
+
+Schedule sb = new Schedule();
+String schedule = '0 0 0 ? * 6L';
+String jobId = System.schedule('Schedule Name', schedule, sb);
+
+String conId = System.scheduleBatch(new Batch(), 'job', 1);

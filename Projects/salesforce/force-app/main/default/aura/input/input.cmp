@@ -1,6 +1,20 @@
-<aura:component>
-    <aura:attribute name="input" type="String"/>
+<aura:component controller="MyAuraController">
+    <aura:attribute name="Messge" type="String" default="Account"/>
+    <aura:attribute name="accList" type="Account[]"/>
+    <aura:attribute name="columns" type="Object"/>
     {v.input}
-    <lightning:input name="InputText" type="text" aura:id="userInput"/>
-    <lightning:button label="Display input" onclick="{!c.myAction}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:input name="input" type="text" aura:id="input"/>
+    <lightning:button label="Click Me!" onclick="{!c.doInit}"/>
+
+    <aura:if istrue="{!v/accList}">
+    <lightning:datatable
+        keyField="Id"
+        data="{!v.accList}"
+        columns="{!v.columns}"
+        hideCheckboxColumn="true"/>
+    </aura:if>
+    
 </aura:component>
