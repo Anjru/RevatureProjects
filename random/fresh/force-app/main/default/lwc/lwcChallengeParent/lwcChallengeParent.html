@@ -1,15 +1,21 @@
 <template>
-    <template for:each={accounts.data} for:item="account">
-        <!-- <li key={account.Id}> {account.Name}</li> -->
-        <c-lwc-challenge-child key={account.Id} record={account} onmycustomevent={refreshCache}></c-lwc-challenge-child>
-        
-    </template>
+    {greeting}
+    <div class="slds-grid slds-gutters">
+        <template for:each={accounts.data} for:item="account">
+            <div class="slds-col" key={account.Id}>
+                <c-lwc-challenge-child record={account}
+                    onmycustomevent={refreshCache}></c-lwc-challenge-child>
+            </div>
+        </template>
+    </div>
 
     <lightning-record-edit-form object-api-name={objectApiName} onsuccess={refreshCache}>
+
         <lightning-input-field field-name={name}></lightning-input-field>
         <lightning-input-field field-name={annualRevenue}></lightning-input-field>
 
         <lightning-button type="submit" label="Save New Record"></lightning-button>
+
     </lightning-record-edit-form>
 
 </template>
