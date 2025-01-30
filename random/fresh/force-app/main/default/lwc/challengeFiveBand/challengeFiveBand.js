@@ -4,7 +4,11 @@ import kendrick from '@salesforce/resourceUrl/kendrick';
 import drake from '@salesforce/resourceUrl/drake';
 
 export default class ChallengeFiveBand extends LightningElement {
-    @track selectedBand = null; 
+    @track 
+    selectedBand = null; 
+
+    @track
+    visible = false;
 
     bands = [
         { image: cole, name: "cole", description: "Best rapper" },
@@ -15,5 +19,14 @@ export default class ChallengeFiveBand extends LightningElement {
     @api
     output(inputValue) {
         this.selectedBand = this.bands.find(band => band.name.toLowerCase() === inputValue.toLowerCase()) || null;
+        this.visible = false;
+    }
+
+    handleChildEvent(){
+        if(this.visible){
+            this.visible = false;
+        } else {
+            this.visible = true;
+        }
     }
 }

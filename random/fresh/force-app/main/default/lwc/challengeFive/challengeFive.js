@@ -11,4 +11,6 @@ export default class ChallengeFive extends LightningElement {
             childComponent.output(this.parentInput);
         }
     }
+
+   
 }

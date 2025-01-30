@@ -1,9 +1,18 @@
 <template>
     <template if:true={selectedBand}>
-        <div>
-            <img src={selectedBand.image} alt={selectedBand.name} width="200">
-            <h2>{selectedBand.name}</h2>
-            <p>{selectedBand.description}</p>
+        <div class="slds-grid slds-wrap">
+            <!-- Band Information Column -->
+            <div class="slds-col slds-size_1-of-2">
+                <img src={selectedBand.image} alt={selectedBand.name} width="200">
+                <h2>{selectedBand.name}</h2>
+                
+            </div>
+            <!-- Challenge Six Component Column -->
+            <div>
+                <c-challenge-six onmycustomevent={handleChildEvent}></c-challenge-six>
+
+                <template if:true={visible}>{selectedBand.description}</template>
+            </div>
         </div>
     </template>
 </template>
