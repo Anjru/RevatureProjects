@@ -1,0 +1,9 @@
+<template>
+    <template if:true={selectedBand}>
+        <div>
+            <img src={selectedBand.image} alt={selectedBand.name} width="200">
+            <h2>{selectedBand.name}</h2>
+            <p>{selectedBand.description}</p>
+        </div>
+    </template>
+</template>
