@@ -4,12 +4,13 @@ public with sharing class ClassDeliveryHelper {
     }
 
     public static void createDeliveryRecords(){
+        
         // Profile p = [SELECT Id FROM Profile WHERE Name='Sales Team Manager'];
         // User u = [SELECT LastName FROM USER WHERE ProfileId =: p.Id];
         // System.runAs(u){
 
         // 
-        }
+        //}
         
         Class_Delivery__c cd = new Class_Delivery__c();
         Database.insert(cd); 
@@ -24,11 +25,12 @@ public with sharing class ClassDeliveryHelper {
     }
 
     public static void changeCourse(Id salesforceId, String fieldUpdate){
-        List<Class_Delivery__c> ids = [SELECT Id, Course__c FROM Class_Delivery__c WHERE Id = :salesforceId];
-        for(Class_Delivery__c course : ids){
-            course.Course__c = fieldUpdate;
-        }
-        Database.update(ids);
+        Class_Delivery__c cd = [SELECT Id, Course__c FROM Class_Delivery__c WHERE Id = :salesforceId WITH SECURITY_ENFORCED LIMIT 1];
+        // for(Class_Delivery__c course : ids){
+        //     
+        // }
+        cd.Course__c = fieldUpdate;
+        Database.update(cd);
     }
     
 }

@@ -2,6 +2,7 @@ trigger ContactTrigger on Contact (before insert, before update, before delete, 
     switch on Trigger.operationType{
         when BEFORE_INSERT {
             ContactHelper.defaultEmail(Trigger.new);
+            ContactHelper.matchingEmailInsert(Trigger.new);
         }
         when BEFORE_UPDATE {
 
@@ -10,7 +11,7 @@ trigger ContactTrigger on Contact (before insert, before update, before delete, 
 
         }
         when AFTER_UPDATE{
-            //ContactHelper.updateAccountPhone(Trigger.new);
+            // ContactHelper.updateAccountPhone(Trigger.new);
         }
     }
 }
