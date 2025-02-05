@@ -1,0 +1,26 @@
+.background {
+    background-color: #38CDDD;
+}
+
+.image-container {
+    max-width: 200px; 
+    padding: 10px; 
+}
+
+.logo-img {
+    width: 100%;
+    height: auto; 
+    display: block; 
+}
+
+.links {
+    text-align: right;
+}
+
+.links a {
+    color: white !important; 
+    text-decoration:underline; 
+    margin-right: 15px; 
+    padding-top: 15px;
+    padding-right: 15px;
+}

@@ -1,0 +1,33 @@
+<template>
+    <div class="slds-grid">
+        
+        <template for:each={caseList.data} for:item="cas">
+            <lightning-record-edit-form key={cas.Id} object-api-name="Case" record-id={cas.Id}>
+                <div class="slds-col slds-gutter">
+                    <lightning-card>
+                    <lightning-input-field field-name={subject}></lightning-input-field>
+                    <lightning-input-field field-name={caseNumber}></lightning-input-field>
+                    <lightning-input-field field-name={status}></lightning-input-field>
+                    <lightning-input-field field-name={priority}></lightning-input-field>
+                    <lightning-button type="submit" label="Save"></lightning-button>
+                </lightning-card>
+                </div>
+            </lightning-record-edit-form>
+        </template>
+ 
+    </div>
+
+    <lightning-card title="Create New Case" icon-name="standard:case">
+        <div class="slds-p-around_medium">
+            <lightning-record-edit-form object-api-name="Case">
+                <lightning-input-field field-name={subject}></lightning-input-field>
+                <lightning-input-field field-name={status}></lightning-input-field>
+                <lightning-input-field field-name={priority}></lightning-input-field>
+                <div class="slds-m-top_medium">
+                    <lightning-button type="submit" label="Create Case" variant="brand"></lightning-button>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+
+</template>

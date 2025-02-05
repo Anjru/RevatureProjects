@@ -1,0 +1,7 @@
+<template>
+    <div class="featuredListings">
+        <template for:each={featuredListings.data} for:item="featuredListing">
+            <li key={featuredListing}> {featuredListing.Name} </li>
+        </template>
+    </div>
+</template>
