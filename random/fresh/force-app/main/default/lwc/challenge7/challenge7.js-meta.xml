@@ -7,7 +7,7 @@
                 lightning__Tab
             </target>
             <target>
-                lightning__HomePage
+                lightning__RecordPage
             </target>
         </targets>
 </LightningComponentBundle>

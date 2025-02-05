@@ -1,6 +1,10 @@
 <template>
-    <lightning-button label="Get Contacts" onclick={handleClick}></lightning-button>
-    <template for:each={contacts} for:item="contact">
-        <li key={contact}> {contact.FirstName} {contact.LastName}</li>
+    <lightning-button label="Get Contact" onclick={handleClick}></lightning-button>
+    <template if:true={contact}>
+        <p class="firstName">First Name: {contact.FirstName}</p>
+        <p class="lastName">Last Name: {contact.LastName}</p>
     </template>
+    <!-- <template for:each={contacts} for:item="contact">
+        <li key={contact}> {contact.FirstName} {contact.LastName}</li>
+    </template> -->
 </template>
