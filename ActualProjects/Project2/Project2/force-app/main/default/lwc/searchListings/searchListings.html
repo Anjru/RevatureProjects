@@ -1,6 +1,20 @@
 <template>
-    <div class="search">
-        <lightning-input label="Search Properties..." lwc:ref="searchInput"></lightning-input>
-        <lightning-button label="Search" onclick={searchProperty}></lightning-button>
+    
+        <lightning-input class="search" lwc:ref="searchInput" label="Search Properties" onchange={search}></lightning-input>
+        <!-- <lightning-button label="Search" onclick={searchProperty}></lightning-button> -->
+        <div class="slds-grid">
+        <template lwc:if={properties}>
+            <template for:each={properties} for:item="property">
+            <div key={property.Id} class="slds-col slds-gutter">
+            <lightning-card class="card">
+                <image src="" alt="img">
+                <p>Name: {property.Name}</p>
+                <p> Address = {property.Address__c}</p>
+            </lightning-card>
+            </div>
+            </template>
+        </template>
     </div>
+    <div class="holder"></div>
+
 </template>

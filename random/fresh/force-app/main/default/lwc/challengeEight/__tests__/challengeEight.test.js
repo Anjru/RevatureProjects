@@ -11,11 +11,9 @@ jest.mock(
     { virtual: true }
 );
 
-
 async function flushPromises() {
     return Promise.resolve();
 }
-
 
 describe('c-challenge-eight', () => {
     afterEach(() => {

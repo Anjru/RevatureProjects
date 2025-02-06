@@ -14,8 +14,19 @@ public with sharing class ProjectTwoHelper {
     @AuraEnabled(cacheable = true)
     public static List<Property__c> getFeaturedListings(){
         try {
-            List<Property__c> featuredListings = [SELECT Property_Title__c, Name, DaysAYear__c FROM Property__c ORDER BY DaysAYear__c DESC LIMIT 10];
+            // Database.query(queryString);
+            List<Property__c> featuredListings = [SELECT Name, DaysAYear__c FROM Property__c ORDER BY DaysAYear__c DESC LIMIT 10];
             return featuredListings;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled (cacheable = true)
+    public static List<Property__c> searchProperty(String propertyAddress){
+        try {
+            // Database.query(queryString);
+            return [SELECT Name, Address__c, Image__c FROM Property__c];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

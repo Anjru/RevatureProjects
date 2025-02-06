@@ -1,0 +1,6 @@
+:host {
+    display: block;
+    min-height: 100vh; /* Ensures it takes full screen height */
+    width: 100%; /* Full width */
+    overflow: auto; /* Allows scrolling */
+}

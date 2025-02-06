@@ -5,6 +5,7 @@ import CASE_SUBJECT from '@salesforce/schema/Case.Subject';
 import CASE_CASE_NUMBER from '@salesforce/schema/Case.CaseNumber';
 import CASE_PRIORITY from '@salesforce/schema/Case.Priority';
 import CASE_STATUS from '@salesforce/schema/Case.Status';
+import { refreshApex } from '@salesforce/apex';
 
 export default class LwcChallenge extends LightningElement {
     subject = CASE_SUBJECT;
@@ -15,4 +16,8 @@ export default class LwcChallenge extends LightningElement {
     @wire(getOpenCases)
     caseList;
 
+    async refresh(){
+        refreshApex(this.caseList);
+        await notifyRecordUpdateAvailable(recordIds);
+    }
 }

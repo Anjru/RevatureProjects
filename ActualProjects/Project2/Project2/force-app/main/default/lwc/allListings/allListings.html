@@ -2,4 +2,74 @@
     <div>
         <c-header></c-header>
     </div>
+
+    <div>
+        <lightning-button label="Toggle Filter" onclick={toggleFilter}> </lightning-button>
+    </div>
+
+    <div class="filterPane">
+        <div>
+            <lightning-combobox
+                name="options"
+                label="Select an Option"
+                value={selectedOption}
+                placeholder="Choose an option"
+                options={options}
+                onchange={handleOptionChange}>
+            </lightning-combobox>
+        </div>
+
+        <div>
+            <lightning-combobox
+                name="Location"
+                label="Select Location"
+                value={selectedOption}
+                placeholder="Choose an option"
+                options={options}
+                onchange={handleLocationChange}>
+            </lightning-combobox>
+        </div>
+
+        <div>
+            <lightning-combobox
+                name="Bedrooms"
+                label="Bedrooms"
+                value={selectedOption}
+                placeholder="Choose an option"
+                options={options}
+                onchange={handleBedroomChange}>
+            </lightning-combobox>
+        </div>
+
+        <div>
+                <lightning-dual-listbox
+                    name="multiSelect"
+                    label="Select Options"
+                    source-label="Available"
+                    selected-label="Selected"
+                    options={options}
+                    value={selectedValues}
+                    onchange={handleOtherChange}>
+                </lightning-dual-listbox>
+        </div>
+
+        <div>
+            <lightning-slider
+                label="Adjust Value"
+                min="0"
+                max="100"
+                step="5"
+                value={sliderValue}
+                onchange={handleSliderChange}>
+
+            </lightning-slider>
+        </div>
+        <div class="holder">
+
+        </div>
+        <div>
+            <c-footer></c-footer>
+        </div>
+
+    </div>
 </template>

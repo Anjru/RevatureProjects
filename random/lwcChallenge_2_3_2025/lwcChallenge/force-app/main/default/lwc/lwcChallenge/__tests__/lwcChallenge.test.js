@@ -1,35 +1,48 @@
 import { createElement } from 'lwc';
 import LwcChallenge from 'c/lwcChallenge';
 import getOpenCases from '@salesforce/apex/CaseHelper.getOpenCases';
+import CaseNumber from '@salesforce/schema/Case.CaseNumber';
+import Priority from '@salesforce/schema/Case.Priority';
+// import { registerApexTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
 
+// Mock the Apex wire adapter
+jest.mock(
+    '@salesforce/apex/CaseHelper.getOpenCases',
+    () => {
+        const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
+        return { default: createApexTestWireAdapter(jest.fn()) };
+    },
+    { virtual: true }
+);
 
-const mockGetOpenCases = registerLdsTestWireAdapter(getOpenCases);
+async function flushPromises(){
+    return Promise.resolve();
+}
 
 describe('c-lwc-challenge', () => {
     afterEach(() => {
-        // Reset the DOM after each test
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllMocks();
     });
 
-    it('renders lightning-record-edit-forms for cases', () => {
-        // Arrange
-        const element = createElement('c-lwc-challenge', {
-            is: LwcChallenge
-        });
+    it('renders lightning-record-edit-form for each case using the "first" class', async () => {
 
-        // Mock case data
-        mockGetOpenCases.emit([
-            { Id: '1', Subject: 'Case 1', Status: 'Open', Priority: 'High' },
-            { Id: '2', Subject: 'Case 2', Status: 'In Progress', Priority: 'Low' }
-        ]);
+        const element = createElement('c-lwc-challenge', { is: LwcChallenge });
+        element.recordId = "XXXXXXXXXXXXXXXXXX";
 
-        // Act
+        const mockOpenCaseList = require('./data/_wireAdapter.json');
+        getOpenCases.emit(mockOpenCaseList.data);
+
         document.body.appendChild(element);
 
-        // Assert
-        const forms = element.shadowRoot.querySelectorAll('lightning-record-edit-form');
-        expect(forms.length).toBe(2); // Two cases should render two forms
+        await flushPromises();
+
+        const caseForms = element.shadowRoot.querySelector('.first');
+        const id = caseForms.getAttribute("data-record-id");
+
+        expect(id).toBe("XXXXXXXXXXXXXXXXXX");
+
     });
 });

@@ -2,7 +2,7 @@
     <div class="slds-grid">
         
         <template for:each={caseList.data} for:item="cas">
-            <lightning-record-edit-form key={cas.Id} object-api-name="Case" record-id={cas.Id}>
+            <lightning-record-edit-form class="first" key={cas.Id} object-api-name="Case" data-record-id={cas.Id}>
                 <div class="slds-col slds-gutter">
                     <lightning-card>
                     <lightning-input-field field-name={subject}></lightning-input-field>
@@ -18,8 +18,8 @@
     </div>
 
     <lightning-card title="Create New Case" icon-name="standard:case">
-        <div class="slds-p-around_medium">
-            <lightning-record-edit-form object-api-name="Case">
+        <div class="slds-p-around_medium" >
+            <lightning-record-edit-form object-api-name="Case" onsuccess={refresh}>
                 <lightning-input-field field-name={subject}></lightning-input-field>
                 <lightning-input-field field-name={status}></lightning-input-field>
                 <lightning-input-field field-name={priority}></lightning-input-field>
