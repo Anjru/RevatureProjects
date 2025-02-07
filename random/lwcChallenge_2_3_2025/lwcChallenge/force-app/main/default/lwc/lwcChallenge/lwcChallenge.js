@@ -1,4 +1,4 @@
-import { LightningElement,wire } from 'lwc';
+import { LightningElement,wire,api } from 'lwc';
 import getOpenCases from '@salesforce/apex/CaseHelper.getOpenCases';
 import CASE_OBJECT from '@salesforce/schema/Case';
 import CASE_SUBJECT from '@salesforce/schema/Case.Subject';
@@ -16,8 +16,9 @@ export default class LwcChallenge extends LightningElement {
     @wire(getOpenCases)
     caseList;
 
-    async refresh(){
+    @api
+    refresh(){
         refreshApex(this.caseList);
-        await notifyRecordUpdateAvailable(recordIds);
+        // await notifyRecordUpdateAvailable(recordIds);
     }
 }
