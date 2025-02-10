@@ -1,20 +1,35 @@
+
 <template>
-    
+
+        <!-- Search Bar -->
         <lightning-input class="search" lwc:ref="searchInput" label="Search Properties" onchange={search}></lightning-input>
         <!-- <lightning-button label="Search" onclick={searchProperty}></lightning-button> -->
-        <div class="slds-grid">
-        <template lwc:if={properties}>
-            <template for:each={properties} for:item="property">
-            <div key={property.Id} class="slds-col slds-gutter">
-            <lightning-card class="card">
-                <image src="" alt="img">
-                <p>Name: {property.Name}</p>
-                <p> Address = {property.Address__c}</p>
-            </lightning-card>
-            </div>
+
+        <div class="slds-grid slds-gutters holder">
+
+            <template lwc:if={properties.data}>
+                <template for:each={propertyList} for:item="property">
+                    <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
+                    <lightning-card class="card">
+                        <!-- <img src={imageUrl} alt="img"> -->
+
+                        <img src={imageUrl} alt="img">
+
+                        <!-- <template lwc:if={imageMapping[property.Id]}>
+                            <img src={imageMapping[property.Id]} alt="Property Image" style="max-width:100%; height:auto;" />
+                        </template>
+                        <template lwc:if={imageMapping[property.Id]}>
+                            <p>No image found.</p>
+                        </template> -->
+
+                        <p>Name: {property.fields.Name.value}</p>
+                        <p> Address = {property.fields.Address__c.value}</p>
+                    </lightning-card>
+                </div>
+                </template>
             </template>
-        </template>
-    </div>
-    <div class="holder"></div>
+
+        </div>
+    <!-- <div class="holder"></div> -->
 
 </template>

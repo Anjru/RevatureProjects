@@ -3,73 +3,102 @@
         <c-header></c-header>
     </div>
 
-    <div>
-        <lightning-button label="Toggle Filter" onclick={toggleFilter}> </lightning-button>
+    <div class="buttonPanel">
+
+        <lightning-button label="Toggle Filter" onclick={toggleFilter} class="button"> </lightning-button>
     </div>
 
-    <div class="filterPane">
-        <div>
-            <lightning-combobox
-                name="options"
-                label="Select an Option"
-                value={selectedOption}
-                placeholder="Choose an option"
-                options={options}
-                onchange={handleOptionChange}>
-            </lightning-combobox>
+    <div class="slds-grid holder">
+        <template lwc:if={filterBoolean}>
+        <div class="slds-col slds-small-size_6-of-12 slds-medium-size_4-of-12 slds-large-size_3-of-12">
+            <div class="filterPane">
+                <div>
+                    <lightning-combobox name="PropertyType" label="Property Type" value={selectedOption}
+                        placeholder="Choose an option" options={propertyTypeOptions} onchange={handlerPropertyTypeChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div>
+                    <lightning-combobox name="Location" label="Select Location (State)" value={selectedOption}
+                        placeholder="Choose an option" options={locationStateOptions} onchange={handleLocationStateChange}>
+                    </lightning-combobox>
+                    <!-- <lightning-input label="Enter Location (State)" onclick={handleLocationChange}>
+
+                    </lightning-input> -->
+                </div>
+
+                <div>
+                    <lightning-combobox name="Bedrooms" label="Bedrooms" value={selectedOption}
+                        placeholder="Choose an option" options={bedroomOptions} onchange={handleBedroomChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div>
+                    <lightning-dual-listbox name="multiSelect" label="Select Options" source-label="Available"
+                        selected-label="Selected" options={otherOptions} value={selectedValues} onchange={handleOtherChange}>
+                    </lightning-dual-listbox>
+                </div>
+
+                <div>
+                    <lightning-slider label="Adjust Price Range" min="0" max="5000" step="5" value={sliderValue}
+                        onchange={handleSliderChange}>
+
+                    </lightning-slider>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <lightning-combobox
-                name="Location"
-                label="Select Location"
-                value={selectedOption}
-                placeholder="Choose an option"
-                options={options}
-                onchange={handleLocationChange}>
-            </lightning-combobox>
+
+        </template>
+
+
+
+        <div class="allListings">
+            <div class="listings">
+                <div class="pane">
+                <!-- colored pane -->
+                
+                    <div class="sort">
+                        <!-- sort option button  -->
+                        <lightning-combobox name="Sort" label="Select Options" value={sort}
+                            placeholder="Choose an option" options={sortOptions} onchange={handleSortChange}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+            <div class="slds-grid slds-gutters">
+
+                <template lwc:if={properties.data}>
+                    <template for:each={propertyList} for:item="property">
+                        <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
+                        <lightning-card class="card">
+                            <!-- <img src={imageUrl} alt="img"> -->
+
+                            <img src={imageUrl} alt="img">
+
+                            <!-- <template lwc:if={imageMapping[property.Id]}>
+                                <img src={imageMapping[property.Id]} alt="Property Image" style="max-width:100%; height:auto;" />
+                            </template>
+                            <template lwc:if={imageMapping[property.Id]}>
+                                <p>No image found.</p>
+                            </template> -->
+
+                            <p>Name: {property.fields.Name.value}</p>
+                            <p> Address = {property.fields.Address__c.value}</p>
+                        </lightning-card>
+                    </div>
+                    </template>
+                </template>
+
+            </div>
+        </div>
         </div>
 
-        <div>
-            <lightning-combobox
-                name="Bedrooms"
-                label="Bedrooms"
-                value={selectedOption}
-                placeholder="Choose an option"
-                options={options}
-                onchange={handleBedroomChange}>
-            </lightning-combobox>
-        </div>
+       
 
-        <div>
-                <lightning-dual-listbox
-                    name="multiSelect"
-                    label="Select Options"
-                    source-label="Available"
-                    selected-label="Selected"
-                    options={options}
-                    value={selectedValues}
-                    onchange={handleOtherChange}>
-                </lightning-dual-listbox>
-        </div>
+    </div>
 
-        <div>
-            <lightning-slider
-                label="Adjust Value"
-                min="0"
-                max="100"
-                step="5"
-                value={sliderValue}
-                onchange={handleSliderChange}>
-
-            </lightning-slider>
-        </div>
-        <div class="holder">
-
-        </div>
-        <div>
-            <c-footer></c-footer>
-        </div>
-
+    <div>
+        <c-footer></c-footer>
     </div>
 </template>
