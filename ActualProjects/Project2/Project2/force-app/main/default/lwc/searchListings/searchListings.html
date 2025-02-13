@@ -7,6 +7,7 @@
             <template for:each={enrichedListings} for:item="property">
                 <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
                     <lightning-card class="card">
+                        
                         <img src={property.ImageURL} alt="img">
                         <p>Name: {property.Name}</p>
                         <p>Address: {property.Address__c}</p>

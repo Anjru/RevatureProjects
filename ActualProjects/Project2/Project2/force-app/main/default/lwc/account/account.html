@@ -5,9 +5,41 @@
 
     <div>
         <div class="Profile">
+            <p>User Profile</p>
             <!-- Image -->
+            <!-- <lightning-card title="Profile Picture Upload">
+                <template if:true={userImageUrl}>
+                    <div class="image-container">
+                        <img src={userImageUrl} alt="Profile Picture" class="profile-image" />
+                    </div>
+                </template>
+        
+                <lightning-file-upload
+                    label="Upload Profile Picture"
+                    name="fileUploader"
+                    accept=".png,.jpg,.jpeg"
+                    record-id={userId}
+                    onuploadfinished={handleUploadFinished}
+                    multiple={singleImage}>
+                </lightning-file-upload>
+            </lightning-card> -->
+
+            <img src={userPicture}>
+            <!-- <p>Name: {userName}</p>
+            <p>Email: {userEmail}</p> -->
              <!-- Name -->
               <!-- Email -->
+
+              
+                <lightning-card title="Edit Record">
+                    <lightning-record-edit-form record-id={userId} object-api-name="User">
+                        <lightning-input-field field-name="Name"></lightning-input-field>
+                        <lightning-input-field field-name="Email"></lightning-input-field>
+                        <lightning-button type="submit" label="Save" variant="brand"></lightning-button>
+                    </lightning-record-edit-form>
+                </lightning-card>
+            
+            
         </div>
 
         <div class="Properties">
