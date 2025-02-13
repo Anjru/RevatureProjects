@@ -1,8 +1,10 @@
 import { LightningElement,track,wire } from 'lwc';
 import { getListRecordsByName } from 'lightning/uiListsApi';
 import PROPERTY_OBJECT from '@salesforce/schema/Property__c';
-// import Properties from 'c/properties/properties';
+import getPropertyImages from '@salesforce/apex/projectTwoHelper.getPropertyImages';
+import addFavorite from '@salesforce/apex/projectTwoHelper.addFavorite';
 
+// import Properties from 'c/properties/properties';
 export default class AllListings extends LightningElement {
     filterBoolean = false;
     
@@ -10,11 +12,18 @@ export default class AllListings extends LightningElement {
     @track sliderValue;
 
     @track bedroom;
+    @track bathroom;
     @track locationState;
     @track other;
 
     @track selectedPropertyType = '';
     @track sort = "-Property__c.Price__c";
+
+    @track listings;
+    // Enriched listings with an extra field (ImageURL) from the property images.
+    @track enrichedListings;
+    // Mapping from property Id to its image URL.
+    @track propertyImageMap = {}; 
 
     otherOptions = [
         { label: 'Pool', value: 'Pool' },
@@ -46,7 +55,23 @@ export default class AllListings extends LightningElement {
         { label: '6', value: '6' }
     ];
 
-    
+    bathroomOptions = [
+        { label: 'Any', value: '' },
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5', value: '5' },
+        { label: '6', value: '6' }
+    ];
+
+    // add to favorites
+    async favorite(event){
+        // await addFavorite / pass in current property
+        
+        const propId = event.currentTarget.dataset.id;
+        await addFavorite({propertyId: propId});
+    }
 
     // Toggle filter pane
     toggleFilter(){
@@ -70,6 +95,11 @@ export default class AllListings extends LightningElement {
     //Update bedroom filter
     handleBedroomChange(event) {
         this.bedroom = event.detail.value;
+    }
+
+    //Update bathroom filter
+    handleBathroomChange(event) {
+        this.bathroom = event.detail.value;
     }
 
     //Update location filter
@@ -100,7 +130,11 @@ export default class AllListings extends LightningElement {
         if (this.bedroom) {
             parts.push(`Bedrooms__c: {eq: ${Number(this.bedroom)}}`);
         }
-    
+
+        // Bathroom filter (numeric comparison)
+        if (this.bathroom) {
+            parts.push(`Bathrooms__c: {eq: ${Number(this.bathroom)}}`);
+        }
         // Location filter (text comparison)
         if (this.locationState) {
             parts.push(`State__c: {eq: '${this.locationState}'}`);
@@ -142,8 +176,57 @@ export default class AllListings extends LightningElement {
         searchTerm: "$query",
         sortBy:"$sortArray",
         where: "$filter"
-    }) properties;
+    }) wiredProperties({ data, error }) {
+        if (data) {
+            // Transform each record to a simplified format:
+            this.listings = data.records.map(record => {
+                return {
+                    Id: record.id, // Uppercase Id for consistency
+                    Name: record.fields.Name.value,
+                    Address__c: record.fields.Address__c.value,
+                    DaysAYear__c: record.fields.DaysAYear__c.value
+                };
+            });
+            console.log('Transformed listings:', this.listings);
+            this.enrichListings();
+        } else if (error) {
+            console.error('Error loading properties:', error);
+        }
+    }
 
+    // Wire adapter for property images.
+    // This Apex method returns a list of PropertyImageWrapper objects,
+    // each containing (for example) propertyId and versionDataUrl.
+    @wire(getPropertyImages, { properties: '$listings' })
+    wiredPropertyImages({ error, data }) {
+        if (data) {
+            // Build a mapping from property Id to its image URL.
+            this.propertyImageMap = {};
+            data.forEach(wrapper => {
+                // If a property has multiple images, here we keep only the first one.
+                if (!this.propertyImageMap[wrapper.propertyId]) {
+                    this.propertyImageMap[wrapper.propertyId] = wrapper.versionDataUrl;
+                }
+            });
+            // Enrich the listings now that we have the image mapping.
+            this.enrichListings();
+        } else if (error) {
+            console.error('Error retrieving property images:', error);
+        }
+    }
+
+    // Helper method to combine raw listings with the corresponding image URL.
+    enrichListings() {
+        if (this.listings) {
+            this.enrichedListings = this.listings.map(listing => {
+                return {
+                    ...listing,
+                    ImageURL: this.propertyImageMap[listing.Id] || 'https://via.placeholder.com/150'
+                };
+            });
+            console.log('Enriched Listings:', this.enrichedListings);
+        }
+    }
 
     get sortArray() {
         return [this.sort];
@@ -152,7 +235,6 @@ export default class AllListings extends LightningElement {
     get propertyList(){
         return this.properties.data.records;
     }
-
     
     locationStateOptions = [
         { label: 'Any', value: '' },

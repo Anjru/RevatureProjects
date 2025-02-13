@@ -22,6 +22,7 @@ public with sharing class ProjectTwoHelper {
         }
     }
 
+    //Search
     @AuraEnabled (cacheable = true)
     public static List<Property__c> searchProperty(String propertyAddress){
         try {
@@ -33,40 +34,88 @@ public with sharing class ProjectTwoHelper {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getPropertyImageUrl(Id propertyId) {
-        // Query for the file attached to the property with Title = '1.jpg'
-        ContentDocumentLink link = [
-            SELECT ContentDocument.LatestPublishedVersionId, ContentDocument.Title 
-            FROM ContentDocumentLink 
-            WHERE LinkedEntityId = :propertyId 
-            AND ContentDocument.Title = '1.jpg'
-            LIMIT 1
-        ];
-        // AND ContentDocument.Title = '1.jpg'
-        if(link != null && link.ContentDocument != null) {
-            System.debug('File found for propertyId: ' + propertyId);
-            // Construct the URL for the image
-            return '/sfc/servlet.shepherd/version/download/' + link.ContentDocument.LatestPublishedVersionId;
+    public static List<PropertyImageWrapper> getPropertyImages(List<Property__c> properties) {
+
+        //Retrieve ids of properties
+        List<Id> propertyIds = new List<Id>();
+        for(Property__c p : properties) {
+            propertyIds.add(p.Id);
         }
-        System.debug('No file found for propertyId: ' + propertyId);
-        return null;
+        
+        // Query ContentDocumentLink to find file links for the given properties.
+        List<ContentDocumentLink> links = [
+            SELECT LinkedEntityId, ContentDocument.LatestPublishedVersionId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId IN :propertyIds
+        ];
+        
+        // Build a mapping using the LinkedEntityId
+        Map<Id, Id> propertyToVersionId = new Map<Id, Id>();
+        for(ContentDocumentLink link : links) {
+            propertyToVersionId.put(link.LinkedEntityId, link.ContentDocument.LatestPublishedVersionId);
+        }
+        
+        // Query ContentVersion records based on the collected version IDs.
+        List<ContentVersion> cvs = [
+            SELECT Id, Title, VersionDataUrl, FileType
+            FROM ContentVersion
+            WHERE Id IN :propertyToVersionId.values()
+        ];
+        
+        // Build a wrapper list that associates a property with its image.
+        List<PropertyImageWrapper> wrappers = new List<PropertyImageWrapper>();
+            for(ContentVersion cv : cvs) {
+                // Now find the property Id that corresponds to this versionId.
+                for(Id propertyId : propertyToVersionId.keySet()) {
+                    if(propertyToVersionId.get(propertyId) == cv.Id) {
+                        wrappers.add(new PropertyImageWrapper(propertyId, cv.VersionDataUrl, cv.Title, cv.FileType));
+                        break;
+                    }
+                }
+            }
+        return wrappers;
     }
 
-    @AuraEnabled(cacheable=true)
-    public static Map<Id, String> getPropertyImages(List<Id> propertyIds) {
-        Map<Id, String> imageUrls = new Map<Id, String>();
-        // Query all ContentDocumentLinks for the given properties (filtering by file name if needed)
-        for(ContentDocumentLink link : [
-            SELECT LinkedEntityId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title
-            FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :propertyIds 
-              AND ContentDocument.Title = '1.jpg'  // For testing a specific image
-        ]){
-            imageUrls.put(link.LinkedEntityId, '/sfc/servlet.shepherd/version/download/' 
-                + link.ContentDocument.LatestPublishedVersionId);
-        }
-        return imageUrls;
+    @AuraEnabled
+    public static void addFavorite(String propertyId){
+        Id currentUserId = UserInfo.getUserId();
+        FavoriteJunc__c fv = new FavoriteJunc__c(Property__c = propertyId, User__c = currentUserId);
+        insert fv;
     }
-    
+
+    @AuraEnabled (cacheable=true)
+    public static List<Property__c> getFavorite(){
+        Id currentUserId = UserInfo.getUserId();
+        Set<Id> propertyIds = new Set<Id>();
+        List<FavoriteJunc__c> favoriteJunc = [SELECT Property__c FROM FavoriteJunc__c WHERE User__c = :currentUserId];
+        for(FavoriteJunc__c fj : favoriteJunc){
+            propertyIds.add(fj.Property__c);
+        }
+        List<Property__c> properties = [SELECT Name, Price__c, Description__c, Location__c FROM Property__c WHERE Id IN :propertyIds];
+        return properties;
+    }
+
+    @AuraEnabled
+    public static void removeFavorite(String propertyId){
+        Id currentUserId = UserInfo.getUserId();
+        FavoriteJunc__c fv = [SELECT Id FROM FavoriteJunc__c WHERE Property__c = :propertyId];
+        System.debug('Removing favorite: ' + fv);
+        delete fv;
+    }
+
+    //Created a wrapper class to be able to store property ID 
+    public class PropertyImageWrapper {
+        @AuraEnabled public Id propertyId;
+        @AuraEnabled public String versionDataUrl;
+        @AuraEnabled public String title;
+        @AuraEnabled public String fileType;
+        
+        public PropertyImageWrapper(Id propertyId, String versionDataUrl, String title, String fileType) {
+            this.propertyId = propertyId;
+            this.versionDataUrl = versionDataUrl;
+            this.title = title;
+            this.fileType = fileType;
+        }
+    }
 
 }

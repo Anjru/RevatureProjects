@@ -2,6 +2,48 @@
     <div>
         <c-header></c-header>
     </div>
+
+    <div>
+        <div class="Profile">
+            <!-- Image -->
+             <!-- Name -->
+              <!-- Email -->
+        </div>
+
+        <div class="Properties">
+            
+        
+
+        <lightning-card title="Favorite Properties">
+            <div class="Favorite">
+            <template if:true={enrichedListings}>
+                <lightning-carousel>
+                    <template for:each={enrichedListings} for:item="property">
+                        <lightning-carousel-image
+                            key={property.Id}
+                            src={property.ImageURL} 
+                            header={property.Name} 
+                            description="Click to view details"
+                            alternative-text="Featured Listing Image">
+                        </lightning-carousel-image>
+                        <div key={property.Id} >
+                            
+                        <lightning-button label="delete" onclick={delFavorite} data-id={property.Id}>
+
+                        </lightning-button>
+                        
+                        </div>
+
+                    </template>
+                </lightning-carousel>
+            </template>
+            </div>
+        </lightning-card>
+
+        </div>
+
+    </div>
+
     <div>
         <c-footer></c-footer>
     </div>

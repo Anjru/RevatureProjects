@@ -1,11 +1,7 @@
-import searchProperty from '@salesforce/apex/ProjectTwoHelper.searchProperty';
-import getPropertyImageUrl from '@salesforce/apex/ProjectTwoHelper.getPropertyImageUrl';
-import getPropertyImages from '@salesforce/apex/ProjectTwoHelper.getPropertyImages';
-import PROPERTY_OBJECT from "@salesforce/schema/Property__c"
-import NAME from "@salesforce/schema/Property__c.Name"
-import { getListRecordsByName } from "lightning/uiListsApi";
-import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 
+import getPropertyImages from '@salesforce/apex/projectTwoHelper.getPropertyImages';
+import PROPERTY_OBJECT from "@salesforce/schema/Property__c"
+import { getListRecordsByName } from "lightning/uiListsApi";
 
 import { api, LightningElement,track,wire } from 'lwc';
 
@@ -14,98 +10,83 @@ export default class SearchListings extends LightningElement {
     error;
     query;
 
-    @track
-    recordId;
-
-    relatedFiles;
-
     searchInput = '';
 
-    imageUrl;
+    /////
 
-    // imageMapping = {};
+    @track listings;
+    // Enriched listings with an extra field (ImageURL) from the property images.
+    @track enrichedListings;
+    // Mapping from property Id to its image URL.
+    @track propertyImageMap = {};    
 
-    @wire(getPropertyImageUrl, { propertyId: 'a00ak00000gCEP3AAO' })
-    wiredImage({ error, data }) {
-        if (data) {
-            this.imageUrl = data;
-        } else if (error) {
-            console.error('Error retrieving image URL:', error);
-        }
-    }
+    ///////////////////////
 
     //Grabs Records by Name WORKS
     @wire(getListRecordsByName, {
         objectApiName: PROPERTY_OBJECT.objectApiName,
         listViewApiName: "All", 
-        fields: ["Property__c.Name", "Property__c.Address__c" , "Property__c.DaysAYear__c"],
+        fields: ["Property__c.Name", "Property__c.Address__c", "Property__c.DaysAYear__c"],
         searchTerm: "$query",
-        sortBy:['-Property__c.DaysAYear__c'],
+        sortBy: ['-Property__c.DaysAYear__c'],
         where: ""
-    }) properties;
+    })
+    wiredProperties({ data, error }) {
+        if (data) {
+            // Transform each record to a simplified format:
+            this.listings = data.records.map(record => {
+                return {
+                    Id: record.id, // Uppercase Id for consistency
+                    Name: record.fields.Name.value,
+                    Address__c: record.fields.Address__c.value,
+                    DaysAYear__c: record.fields.DaysAYear__c.value
+                };
+            });
+            console.log('Transformed listings:', this.listings);
+            this.enrichListings();
+        } else if (error) {
+            console.error('Error loading properties:', error);
+        }
+    }
     
-    //Retruns list of Property Works)
-    get propertyList(){
-        console.log("ImageURL: " + this.imageUrl);
-        console.log("RecordID " + this.recordId)
-        return this.properties.data.records;
-        // return this.properties || [];
+    
+    // Wire adapter for property images.
+    // This Apex method returns a list of PropertyImageWrapper objects,
+    // each containing (for example) propertyId and versionDataUrl.
+    @wire(getPropertyImages, { properties: '$listings' })
+    wiredPropertyImages({ error, data }) {
+        if (data) {
+            // Build a mapping from property Id to its image URL.
+            this.propertyImageMap = {};
+            data.forEach(wrapper => {
+                // If a property has multiple images, here we keep only the first one.
+                if (!this.propertyImageMap[wrapper.propertyId]) {
+                    this.propertyImageMap[wrapper.propertyId] = wrapper.versionDataUrl;
+                }
+            });
+            // Enrich the listings now that we have the image mapping.
+            this.enrichListings();
+        } else if (error) {
+            console.error('Error retrieving property images:', error);
+        }
     }
 
-    updateRecordId(){
-        console.log("updated");
-        this.recordId = this.template.querySelector('.img').getAttribute('data-record-id');
+    // Helper method to combine raw listings with the corresponding image URL.
+    enrichListings() {
+        if (this.listings) {
+            this.enrichedListings = this.listings.map(listing => {
+                return {
+                    ...listing,
+                    ImageURL: this.propertyImageMap[listing.Id] || 'https://via.placeholder.com/150'
+                };
+            });
+            console.log('Enriched Listings:', this.enrichedListings);
+        }
     }
 
     // Updates search field to query
     search(){
         this.query = this.refs.searchInput.value;
-        this.updateRecordId();
     }
 
-    //works with wireservice getListRecords name (REPLACE properties)
-        // wiredProperties({ error, data }) {
-    //     if (data) {
-    //         this.properties = data.records;
-    //         // Build an array of property Ids
-    //         const propertyIds = this.properties.map(record => record.Id);
-    //         // Call Apex to get the mapping of propertyId to image URL
-    //         getPropertyImages({ propertyIds })
-    //             .then(result => {
-    //                 this.imageMapping = result;
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error retrieving image mapping:', error);
-    //             });
-    //     } else if (error) {
-    //         console.error('Error fetching properties:', error);
-    //     }
-    // }
-
-    //TESTING IMages (related Lists)
-    // @wire(getRelatedListRecords, {
-    //     parentRecordId: '$recordId',
-    //     relatedListId: 'ContentDocumentLinks',
-    //     fields: ['ContentDocumentLink.ContentDocumentId']
-    // })
-    // wiredRelatedFiles({ error, data }) {
-    //     if (data) {
-    //         this.relatedFiles = data.records;
-    //     } else if (error) {
-    //         // Handle error
-    //     }
-    // }
-
-    //Testing images
-    // @wire(getProductImages, { productId: '$recordId' })
-    // wiredImages({ error, data }) {
-    //     if (data) {
-    //         this.images = data.map(image => ({
-    //             ...image,
-    //             imageUrl: `/sfc/servlet.shepherd/version/download/${image.Id}`
-    //         }));
-    //     } else if (error) {
-    //         // Handle error
-    //     }
-    // }
 }

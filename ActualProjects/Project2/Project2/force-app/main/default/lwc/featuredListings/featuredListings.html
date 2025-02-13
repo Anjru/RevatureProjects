@@ -1,24 +1,24 @@
 <template>
     <div class="featuredListings">
-
-        <lightning-card title="Featured Listings">
-            <lightning-carousel>
-                <template for:each={featuredListings.data} for:item="featuredListing">
-                    <lightning-carousel-image
-                        key={featuredListing.Id} 
-                        src={featuredListing.Image_URL__c} 
-                        header={featuredListing.Name} 
-                        description="Click to view details"
-                        alternative-text="Featured Listing Image">
-                    </lightning-carousel-image>
-                </template>
-            </lightning-carousel>
-        </lightning-card>
         
+        <lightning-card title="Featured Listings">
+            <div class="carousel">
+            <template if:true={enrichedListings}>
+                <lightning-carousel>
+                    <template for:each={enrichedListings} for:item="property">
+                        <lightning-carousel-image
+                            key={property.Id}
+                            src={property.ImageURL} 
+                            header={property.Name} 
+                            description="Click to view details"
+                            alternative-text="Featured Listing Image">
+                        </lightning-carousel-image>
+                    </template>
+                </lightning-carousel>
+            </template>
+            </div>
+            
+        </lightning-card>
 
-        <!-- FIX: ADD CAROUSEL -->
-        <!-- <template lwc:if={featuredListings}>
-        <lightning-datatable key-field="Id" data={featuredListings} columns={columns}></lightning-datatable>
-        </template> -->
     </div>
 </template>

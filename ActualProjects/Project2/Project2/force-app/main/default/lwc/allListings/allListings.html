@@ -22,14 +22,18 @@
                     <lightning-combobox name="Location" label="Select Location (State)" value={selectedOption}
                         placeholder="Choose an option" options={locationStateOptions} onchange={handleLocationStateChange}>
                     </lightning-combobox>
-                    <!-- <lightning-input label="Enter Location (State)" onclick={handleLocationChange}>
 
-                    </lightning-input> -->
                 </div>
 
                 <div>
                     <lightning-combobox name="Bedrooms" label="Bedrooms" value={selectedOption}
                         placeholder="Choose an option" options={bedroomOptions} onchange={handleBedroomChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div>
+                    <lightning-combobox name="Bathrooms" label="Bathrooms" value={selectedOption}
+                        placeholder="Choose an option" options={bathroomOptions} onchange={handleBathroomChange}>
                     </lightning-combobox>
                 </div>
 
@@ -68,23 +72,14 @@
 
             <div class="slds-grid slds-gutters">
 
-                <template lwc:if={properties.data}>
-                    <template for:each={propertyList} for:item="property">
+                <template lwc:if={enrichedListings}>
+                    <template for:each={enrichedListings} for:item="property">
                         <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
                         <lightning-card class="card">
-                            <!-- <img src={imageUrl} alt="img"> -->
-
-                            <img src={imageUrl} alt="img">
-
-                            <!-- <template lwc:if={imageMapping[property.Id]}>
-                                <img src={imageMapping[property.Id]} alt="Property Image" style="max-width:100%; height:auto;" />
-                            </template>
-                            <template lwc:if={imageMapping[property.Id]}>
-                                <p>No image found.</p>
-                            </template> -->
-
-                            <p>Name: {property.fields.Name.value}</p>
-                            <p> Address = {property.fields.Address__c.value}</p>
+                            <img src={property.ImageURL} alt="img">
+                            <p>Name: {property.Name}</p>
+                            <p>Address: {property.Address__c}</p>
+                            <lightning-button label="Save" onclick={favorite} data-id={property.Id}></lightning-button>
                         </lightning-card>
                     </div>
                     </template>
@@ -93,8 +88,6 @@
             </div>
         </div>
         </div>
-
-       
 
     </div>
 
