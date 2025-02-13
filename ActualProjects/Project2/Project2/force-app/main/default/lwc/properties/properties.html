@@ -2,7 +2,36 @@
     <div>
         <c-header></c-header>
     </div>
-
+    <p>Property ID: {propertyId}</p>
+    <p>Address: {address}</p>
+    <p>Bathrooms: {bathrooms}</p>
+    <p>Bedrooms: {bedrooms}</p>
+    <p>Description: {description}</p>
+    <p>Days A Year: {daysAYear}</p>
+    <p>Location: {location}</p>
+    <p> Latitude: {latitude} </p>
+    <p> Longitude: {longitude} </p>
+    <p>Name: {name}</p>
+    <p>Price: {price}</p>
+    <p>Square Footage: {squareFootage}</p>
+    <p>State: {state}</p>
+    <p>Type: {type}</p>
+    <p>Other Details</p>
+    <template for:each={picklistValues} for:item="value">
+        <p key={value}>{value}</p>
+    </template>
+    <!-- MAP -->
+    <template if:true={mapMarkers}>
+        <lightning-map 
+            map-markers={mapMarkers} 
+            zoom-level="12" 
+            center={mapCenter}>
+        </lightning-map>
+    </template>
+    <!-- Optionally, display a message if location data is not available -->
+    <template if:false={mapMarkers}>
+        <p>No location data available.</p>
+    </template>
     <!-- Property Image -->
 
     <!-- Button to save property -->
@@ -13,6 +42,7 @@
 
     <!-- Similar Properties -->
 
+    
     <div>
         <c-footer></c-footer>
     </div>

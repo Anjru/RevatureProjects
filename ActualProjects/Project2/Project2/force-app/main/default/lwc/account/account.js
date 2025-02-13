@@ -97,8 +97,12 @@ export default class Accounts extends LightningElement {
         
         async delFavorite(event){
             const propId = event.currentTarget.dataset.id;
+            try{
             await removeFavorite({propertyId: propId});
             await refreshApex(this.wiredProperty);
+            } catch (error){
+                console.error("Error removing favorite: ", error);
+            }
         }
 
         // Fetch existing profile image

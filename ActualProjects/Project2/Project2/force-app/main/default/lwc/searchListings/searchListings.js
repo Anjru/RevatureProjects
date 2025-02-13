@@ -13,7 +13,7 @@ export default class SearchListings extends LightningElement {
     searchInput = '';
 
     /////
-
+    
     @track listings;
     // Enriched listings with an extra field (ImageURL) from the property images.
     @track enrichedListings;
@@ -21,6 +21,26 @@ export default class SearchListings extends LightningElement {
     @track propertyImageMap = {};    
 
     ///////////////////////
+
+    @api property = '';
+    propertyUrl = '';
+
+    passPropertyUrl(event) {
+        // Prevent default navigation so we can update the URL and then navigate
+        event.preventDefault();
+        
+        // Retrieve the property ID from the data attribute
+        const propId = event.currentTarget.dataset.id;
+        this.propertyUrl = `/properties?c__propertyId=${propId}`;
+        
+        // Optionally, perform any custom logic before redirecting
+        console.log('Navigating to:', this.propertyUrl);
+        
+        // Now navigate manually
+        window.location.href = this.propertyUrl;
+    }
+
+    /////////////////////////////////////
 
     //Grabs Records by Name WORKS
     @wire(getListRecordsByName, {

@@ -7,10 +7,12 @@
             <template for:each={enrichedListings} for:item="property">
                 <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
                     <lightning-card class="card">
-                        
-                        <img src={property.ImageURL} alt="img">
-                        <p>Name: {property.Name}</p>
-                        <p>Address: {property.Address__c}</p>
+                        <!-- Added data-id attribute and corrected the onclick function name -->
+                        <a data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl} style="display:block; text-decoration:none; color:inherit;">
+                            <img src={property.ImageURL} alt="img">
+                            <p>Name: {property.Name}</p>
+                            <p>Address: {property.Address__c}</p>
+                        </a>
                     </lightning-card>
                 </div>
             </template>

@@ -79,8 +79,19 @@ public with sharing class ProjectTwoHelper {
     @AuraEnabled
     public static void addFavorite(String propertyId){
         Id currentUserId = UserInfo.getUserId();
-        FavoriteJunc__c fv = new FavoriteJunc__c(Property__c = propertyId, User__c = currentUserId);
-        insert fv;
+        // Check if the record already exists
+        List<FavoriteJunc__c> existingFavorites = [
+            SELECT Id FROM FavoriteJunc__c 
+            WHERE Property__c = :propertyId AND User__c = :currentUserId
+            LIMIT 1
+        ];
+        if (existingFavorites.isEmpty()) {
+            // No existing favorite, so insert new record
+            FavoriteJunc__c fv = new FavoriteJunc__c(Property__c = propertyId, User__c = currentUserId);
+            insert fv;
+        } else {
+            System.debug('Favorite already exists for this property and user.');
+        }
     }
 
     @AuraEnabled (cacheable=true)
@@ -98,9 +109,21 @@ public with sharing class ProjectTwoHelper {
     @AuraEnabled
     public static void removeFavorite(String propertyId){
         Id currentUserId = UserInfo.getUserId();
-        FavoriteJunc__c fv = [SELECT Id FROM FavoriteJunc__c WHERE Property__c = :propertyId];
+        FavoriteJunc__c fv = [SELECT Id FROM FavoriteJunc__c WHERE Property__c = :propertyId LIMIT 1];
         System.debug('Removing favorite: ' + fv);
         delete fv;
+    }
+
+    @AuraEnabled (cacheable=true)
+    public static Property__c getProperty(String propertyId){
+        try {
+            return [SELECT Id, Name, Price__c, Description__c, Location__c, 
+                Address__c, Bathrooms__c, Bedrooms__c, DateListed__c,
+                DaysAYear__c, SquareFootage__c, State__c, Type__c, Other__c 
+                FROM Property__c WHERE Id = :propertyId LIMIT 1];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
     }
 
     //Created a wrapper class to be able to store property ID 
