@@ -1,14 +1,18 @@
 <template>
     <!-- Search Bar -->
-    <lightning-input class="search" lwc:ref="searchInput" label="Search Properties" onchange={search}></lightning-input>
+    <div class="search" >
+        <lightning-input lwc:ref="searchInput" label="Search Properties" onchange={search}></lightning-input>
+    </div>
 
-    <div class="slds-grid slds-gutters holder">
+    <div class="slds-grid slds-gutters slds-wrap holder">
         <template if:true={enrichedListings}>
             <template for:each={enrichedListings} for:item="property">
-                <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
-                    <lightning-card class="card">
+                <div key={property.Id} class="slds-col slds-size_1-of-3 card" data-record-id={property.Id}>
+                    <lightning-card>
                         <!-- Added data-id attribute and corrected the onclick function name -->
-                        <a data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl} style="display:block; text-decoration:none; color:inherit;">
+                        <a data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl} 
+                            style="display:block; text-decoration:none; color:inherit;"
+                            class="slds-text-align_center ">
                             <img src={property.ImageURL} alt="img">
                             <p>Name: {property.Name}</p>
                             <p>Address: {property.Address__c}</p>

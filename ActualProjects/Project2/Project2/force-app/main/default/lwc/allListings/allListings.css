@@ -5,11 +5,6 @@
     overflow: auto; /* Allows scrolling */
 }
 
-.img {
-    padding: 2% 2% 2% 2%;
-    margin: 2% 2% 2% 2%;
-}
-
 .buttonPanel{
     padding-top: 3%;
     padding-left: 1%;
@@ -60,4 +55,8 @@
     margin-bottom: 20px;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.card {
+    margin: 1% 1%;
 }

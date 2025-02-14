@@ -1,0 +1,18 @@
+lightning-card{
+    height: 750px;
+    width: 500px;
+    }     
+
+lightning-carousel{
+    height:400px;
+    width: 300px;
+}
+
+lightning-carousel-image{
+    height:80%;
+}
+
+.profile{
+    width: 400px;
+    margin-left: 50px;
+}

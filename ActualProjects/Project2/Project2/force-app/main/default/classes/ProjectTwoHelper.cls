@@ -4,7 +4,7 @@
  * Class:ProjectTwoHelper
  */
 //This class will assist components to interact with Salesforce
-public with sharing class ProjectTwoHelper {
+public without sharing class ProjectTwoHelper {
     public projectTwoHelper() {
 
     }
@@ -123,6 +123,46 @@ public with sharing class ProjectTwoHelper {
                 FROM Property__c WHERE Id = :propertyId LIMIT 1];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<ContentVersion> getRecordAttachments(String recordId){
+    try {
+    
+        List<ContentDocumentLink> cdlList = [SELECT Id, ContentDocument.LatestPublishedVersionId FROM ContentDocumentLink WHERE LinkedEntityId = :recordId];
+        Set<String> cdlIdList = new Set<String>();
+        for(ContentDocumentLink cdl : cdlList) {
+            cdlIdList.add(cdl.ContentDocument.LatestPublishedVersionId);
+        }
+        Set<String> fileTypes = new Set<String>{'jpg', 'png'};
+        return [SELECT Title, VersionDataUrl, FileType FROM ContentVersion WHERE Id IN :cdlIdList AND FileType IN :fileTypes];
+    } catch (Exception e) {
+        throw new AuraHandledException(e.getMessage());
+    }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Property__c> getRelatedProperties(String propertyId) {
+        try {
+            // Retrieve the property by ID
+            Property__c property = [SELECT Id, State__c, Type__c FROM Property__c WHERE Id = :propertyId LIMIT 1];
+
+            // Check if the property exists
+            if (property == null) {
+                throw new AuraHandledException('Property not found.');
+            }
+
+            // Extract State and Type values
+            String state = property.State__c;
+            String propertyType = property.Type__c; // FIXED: Renamed from "Type" to avoid reserved keyword issues
+
+            // Retrieve related properties matching state and type
+            return [SELECT Id, Name, State__c, Type__c FROM Property__c WHERE Type__c = :propertyType AND State__c = :state LIMIT 5];
+            // return [SELECT Id FROM Property__c];
+        } catch (Exception e) {
+            System.debug('Error in getRelatedProperties: ' + e.getMessage());
+            return new List<Property__c>(); // FIXED: Return an empty list instead of throwing a general exception
         }
     }
 

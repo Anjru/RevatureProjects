@@ -70,12 +70,11 @@
                     </div>
                 </div>
 
-            <div class="slds-grid slds-gutters">
-
+            <div class="slds-grid slds-gutters slds-wrap">
                 <template lwc:if={enrichedListings}>
                     <template for:each={enrichedListings} for:item="property">
-                        <div key={property.Id} class="slds-col img" data-record-id={property.Id}>
-                        <lightning-card class="card">
+                        <div key={property.Id} class="slds-col slds-size_1-of-4" data-record-id={property.Id}>
+                        <lightning-card class="slds-text-align_center card">
                             <img src={property.ImageURL} alt="img">
                             <p>Name: {property.Name}</p>
                             <p>Address: {property.Address__c}</p>

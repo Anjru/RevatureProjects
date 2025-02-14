@@ -2,21 +2,31 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Center horizontally */
-    
     justify-content: flex-start; /* Ensures content stays at the top */
-    padding-top: 20px; /* Adds space from the top */
-
 }
 
 .search lightning-input {
     min-width: 500px;
 }
 
-.class {
-    min-width: 500px;
-    max-width: 500px;
+.holder {
+    /* height: 100vh; */
+    max-width: 80%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
 }
 
-.holder {
-    height: 100vh;
+.card {
+    margin: 1%;
+    padding: auto;
+    height: 100%;
+}
+
+.inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+    min-width: 100%;
 }

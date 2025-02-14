@@ -1,9 +1,11 @@
 import { LightningElement,api,wire,track } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
 import getProperty from '@salesforce/apex/projectTwoHelper.getProperty';
+import getRecordAttachments from '@salesforce/apex/projectTwoHelper.getRecordAttachments';
 import MULTIPICKLIST_FIELD from '@salesforce/schema/Property__c.Other__c';
-import RECORD_ID from '@salesforce/schema/Property__c.Id';
 import { getRecord } from 'lightning/uiRecordApi';
+import getPropertyImages from '@salesforce/apex/projectTwoHelper.getPropertyImages';
+import getRelatedProperties from '@salesforce/apex/projectTwoHelper.getRelatedProperties';
 
 export default class Properties extends LightningElement {
     
@@ -25,6 +27,9 @@ export default class Properties extends LightningElement {
     state;
     type;
 
+    @track attachments = [];
+    wiredCarousel;
+
     @track mapMarkers = [];
     @track mapCenter = {};
 
@@ -32,8 +37,10 @@ export default class Properties extends LightningElement {
 
     @track picklistValues = [];
 
-    /////////////////////////
+    @track relatedProperties = [];
 
+    /////////////////////////
+    // Returns lists of option fields (pool)
     @wire(getRecord, { recordId: '$recordId', fields: [MULTIPICKLIST_FIELD] })
     wiredRecord({ error, data }) {
         if (data) {
@@ -47,6 +54,23 @@ export default class Properties extends LightningElement {
             console.error(error);
         }
     }
+
+    //////////////////////////////c/aboutUs
+    
+    @wire(getRecordAttachments, {recordId : '$propertyId'})
+    wiredAttacchments(result){
+        this.wiredCarousel = result;
+        if(result.data){
+            this.attachments = result.data.map(file => ({
+                title: file.Title,
+                fileType: file.FileType,
+                url: file.VersionDataUrl
+            }));
+        } else if(result.error){
+
+        }
+    }
+    ////////////////////////////////////
 
     ////////////////c/aboutUs
 
@@ -105,8 +129,75 @@ export default class Properties extends LightningElement {
             this.state = data.State__c;
             this.type = data.Type__c;
             this.setMapMarkers();
+            this.getRelated();
         } else if (results.error){
 
+        }
+    }
+
+    //////////////////////////////////////////
+
+    // Raw featured Property__c records.
+    @track listings;
+    // Enriched listings with an extra field (ImageURL) from the property images.
+    @track enrichedListings;
+    // Mapping from property Id to its image URL.
+    @track propertyImageMap = {};
+
+    // Helper method to combine raw listings with the corresponding image URL.
+    enrichListings() {
+        // Only update enrichedListings if we have both listings and a non-empty image mapping.
+        if (this.listings && Object.keys(this.propertyImageMap).length > 0) {
+            this.enrichedListings = this.listings.map(listing => {
+                return {
+                    ...listing,
+                    ImageURL: this.propertyImageMap[listing.Id]
+                };
+            });
+        }
+    }
+
+    async getRelated(){
+        try {
+            console.log("PropertyId: " + this.propertyId);
+            const relatedProperties = await getRelatedProperties({ propertyId: this.propertyId });
+            
+            if (!relatedProperties || relatedProperties.length === 0) {
+                console.warn("No related properties found.");
+                return;
+            }
+    
+            this.listings = relatedProperties;
+            console.log("Related Properties Retrieved:", this.listings);
+        
+            // Trigger getPropertyImages after listings are populated
+            this.refreshPropertyImages();
+        } catch (error) {
+            console.error("Error fetching related properties:", error);
+        }
+    }
+    
+    // Manually refresh property images after related properties are set
+    refreshPropertyImages() {
+        if (this.listings && this.listings.length > 0) {
+            getPropertyImages({ properties: this.listings })
+                .then(data => {
+                    console.log("Property Images Retrieved:", data);
+    
+                    this.propertyImageMap = {};
+                    data.forEach(wrapper => {
+                        if (!this.propertyImageMap[wrapper.propertyId]) {
+                            this.propertyImageMap[wrapper.propertyId] = wrapper.versionDataUrl;
+                        }
+                    });
+    
+                    this.enrichListings();
+                })
+                .catch(error => {
+                    console.error("Error fetching property images:", error);
+                });
+        } else {
+            console.warn("Skipping image fetch - no listings available.");
         }
     }
 

@@ -2,7 +2,7 @@
     <div class="featuredListings">
         
         <lightning-card title="Featured Listings">
-            <div class="carousel">
+
             <template if:true={enrichedListings}>
                 <lightning-carousel>
                     <template for:each={enrichedListings} for:item="property">
@@ -10,13 +10,11 @@
                             key={property.Id}
                             src={property.ImageURL} 
                             header={property.Name} 
-                            description="Click to view details"
                             alternative-text="Featured Listing Image">
                         </lightning-carousel-image>
                     </template>
                 </lightning-carousel>
             </template>
-            </div>
             
         </lightning-card>
 
