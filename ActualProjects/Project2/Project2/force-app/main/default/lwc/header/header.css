@@ -1,5 +1,6 @@
 .background {
     background-color: #38CDDD;
+    padding: 2% 2% 2% 2%;
 }
 
 .image-container {
@@ -16,6 +17,7 @@
 
 .links {
     text-align: right;
+    font-size: 20px;
 }
 
 .links a {

@@ -9,10 +9,13 @@
         <div class="slds-col links">
             <a href="/">Home</a> 
             <a href="/alllistings">All Lists</a> 
+            <template lwc:if={isNotGuest}>
             <a href="/account">Account</a> 
-            <!-- <a href="/properties">Properties</a> -->
             <a href="/secur/logout.jsp" >Logout</a>
+            </template>
+            <template lwc:if={isguest}>
             <a href="/login">Login</a>
+            </template>
         </div>
     </div>
 </template>

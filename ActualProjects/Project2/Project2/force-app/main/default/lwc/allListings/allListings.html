@@ -10,7 +10,7 @@
 
     <div class="slds-grid holder">
         <template lwc:if={filterBoolean}>
-        <div class="slds-col slds-small-size_6-of-12 slds-medium-size_4-of-12 slds-large-size_3-of-12">
+        <div class="slds-col">
             <div class="filterPane">
                 <div>
                     <lightning-combobox name="PropertyType" label="Property Type" value={selectedOption}
@@ -52,33 +52,40 @@
             </div>
         </div>
 
-
         </template>
-
-
 
         <div class="allListings">
             <div class="listings">
-                <div class="pane">
-                <!-- colored pane -->
                 
-                    <div class="sort">
+                <div class="pane">
+                    <!-- Left side: Property Title -->
+                    <div class="propertyTitle">
+                      <p>Properties</p>
+                    </div>
+                    <!-- Right side: Pane 2 -->
+                    <div class="pane2">
+                      <div class="sort">
                         <!-- sort option button  -->
                         <lightning-combobox name="Sort" label="Select Options" value={sort}
                             placeholder="Choose an option" options={sortOptions} onchange={handleSortChange}>
                         </lightning-combobox>
+                      </div>
                     </div>
-                </div>
-
+                  </div>
+                  
             <div class="slds-grid slds-gutters slds-wrap">
                 <template lwc:if={enrichedListings}>
                     <template for:each={enrichedListings} for:item="property">
-                        <div key={property.Id} class="slds-col slds-size_1-of-4" data-record-id={property.Id}>
-                        <lightning-card class="slds-text-align_center card">
+                        <div key={property.Id} class="slds-col slds-size_1-of-4 slds-text-align_center card" data-record-id={property.Id}>
+                        <lightning-card style="width: 300px; height: 400px;" >
                             <img src={property.ImageURL} alt="img">
-                            <p>Name: {property.Name}</p>
-                            <p>Address: {property.Address__c}</p>
+                            <p>{property.Name}</p>
+                            <p>{property.Address__c}</p>
+                            <p>${property.Price__c}/month</p>
+                            <p>{property.DateListed__c}</p>
+                            <template lwc:if={isNotGuest}>
                             <lightning-button label="Save" onclick={favorite} data-id={property.Id}></lightning-button>
+                            </template>
                         </lightning-card>
                     </div>
                     </template>

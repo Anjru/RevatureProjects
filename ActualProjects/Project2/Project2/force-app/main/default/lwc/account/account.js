@@ -49,17 +49,25 @@ export default class Accounts extends LightningElement {
 
     
 
-    @wire(getFavorite) 
-    wiredProperties(result) {
-        this.wiredProperty = result;
-        if (result.data) {
-            this.listings = result.data;
-            // Process listings to enrich them with images if available.
-            this.enrichListings();
-        } else if (result.error) {
-            console.error('Error retrieving featured listings:', error);
-        }
+    @wire(getFavorite)
+wiredProperties(result) {
+    this.wiredProperty = result;
+    if (result.data) {
+        this.listings = result.data.map(record => {
+            return {
+                Id: record.Id, // Use uppercase Id as returned
+                Name: record.Name,
+                Address__c: record.Address__c,
+                Price__c: record.Price__c,
+                DateListed__c: record.DateListed__c,
+                DaysAYear__c: record.DaysAYear__c
+            };
+        });
+        this.enrichListings();
+    } else if (result.error) {
+        console.error('Error retrieving featured listings:', result.error);
     }
+}
 
     // Wire adapter for property images.
         // This Apex method returns a list of PropertyImageWrapper objects,

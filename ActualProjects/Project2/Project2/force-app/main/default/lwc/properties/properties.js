@@ -27,6 +27,8 @@ export default class Properties extends LightningElement {
     state;
     type;
 
+    toggle = false;
+
     @track attachments = [];
     wiredCarousel;
 
@@ -55,21 +57,45 @@ export default class Properties extends LightningElement {
         }
     }
 
-    //////////////////////////////c/aboutUs
+    //////////////////////////////
     
-    @wire(getRecordAttachments, {recordId : '$propertyId'})
-    wiredAttacchments(result){
-        this.wiredCarousel = result;
-        if(result.data){
-            this.attachments = result.data.map(file => ({
-                title: file.Title,
-                fileType: file.FileType,
-                url: file.VersionDataUrl
-            }));
-        } else if(result.error){
+    // @wire(getRecordAttachments, {recordId : '$propertyId'})
+    // wiredAttacchments(result){
+    //     this.wiredCarousel = result;
+    //     if(result.data){
+    //         this.attachments = result.data.map(file => ({
+    //             title: file.Title,
+    //             fileType: file.FileType,
+    //             url: file.VersionDataUrl
+    //         }));
+    //     } else if(result.error){
 
+    //     }
+    // }
+
+    async fetchAttachments() {
+        if (!this.propertyId) {
+            console.warn("No propertyId available to fetch attachments.");
+            return;
+        }
+        try {
+            console.log("Fetching attachments for propertyId:", this.propertyId);
+            const result = await getRecordAttachments({ recordId: this.propertyId });
+            if (result && result.length > 0) {
+                this.attachments = result.map(file => ({
+                    title: file.Title,
+                    fileType: file.FileType,
+                    url: file.VersionDataUrl
+                }));
+                console.log("Attachments fetched:", this.attachments);
+            } else {
+                console.warn("No attachments found for propertyId:", this.propertyId);
+            }
+        } catch (error) {
+            console.error("Error fetching attachments:", error);
         }
     }
+    
     ////////////////////////////////////
 
     ////////////////c/aboutUs
@@ -107,6 +133,7 @@ export default class Properties extends LightningElement {
             // Retrieve the property id from the URL state
             this.propertyId = pageRef.state.c__propertyId;
             console.log('Retrieved Property ID from URL:', this.propertyId);
+            this.fetchAttachments();
         }
     }
 
@@ -198,6 +225,14 @@ export default class Properties extends LightningElement {
                 });
         } else {
             console.warn("Skipping image fetch - no listings available.");
+        }
+    }
+
+    toggleContact(){
+        if(this.toggle){
+            this.toggle = false;
+        } else {
+            this.toggle = true;
         }
     }
 

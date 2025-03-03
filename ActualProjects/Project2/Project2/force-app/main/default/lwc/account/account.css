@@ -13,6 +13,26 @@ lightning-carousel-image{
 }
 
 .profile{
-    width: 400px;
-    margin-left: 50px;
+    width: 35%;
+    margin-bottom: 3%;
+}
+
+.profilePic{
+    width: 200px;
+    margin-bottom: 2%;
+}
+.background {
+    background-color: #D2EAEC;
+    padding: 3% 3% 3% 3%;
+}
+
+p {
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+}
+
+.inside p {
+    font-size: 16px;
+    color: black;
 }

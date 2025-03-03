@@ -3,10 +3,13 @@ import { getListRecordsByName } from 'lightning/uiListsApi';
 import PROPERTY_OBJECT from '@salesforce/schema/Property__c';
 import getPropertyImages from '@salesforce/apex/projectTwoHelper.getPropertyImages';
 import addFavorite from '@salesforce/apex/projectTwoHelper.addFavorite';
+import isGuest from '@salesforce/user/isGuest';
 
 // import Properties from 'c/properties/properties';
 export default class AllListings extends LightningElement {
     filterBoolean = false;
+    
+    isNotGuest = !isGuest;
     
     @track selectedOption = ''; 
     @track sliderValue;
@@ -35,7 +38,7 @@ export default class AllListings extends LightningElement {
         {label: 'Price(high-low)', value: "-Property__c.Price__c"},
         {label: 'Price(low-high)', value: "Property__c.Price__c"},
         {label: 'Date Listed(high-low)', value: "-Property__c.DateListed__c"},
-        {label: 'Date Listed(high-low)', value: "Property__c.DateListed__c"}
+        {label: 'Date Listed(low-high)', value: "Property__c.DateListed__c"}
     ]
 
     propertyTypeOptions = [
@@ -112,6 +115,7 @@ export default class AllListings extends LightningElement {
         this.other = event.detail.value;
     }
 
+    //
     handleSortChange(event){
         this.sort = event.detail.value;
     }
@@ -154,9 +158,18 @@ export default class AllListings extends LightningElement {
         }
     
         // Build the filter using an "and" operator
-        let filterStr = `{and: [${parts.map(p => `{${p}}`).join(", ")}]}`;
+        let filterBody = "";
+        for (let i = 0; i < parts.length; i++) {
+            filterBody += `{${parts[i]}}`;
+            if (i < parts.length - 1) {
+                filterBody += ", ";
+            }
+        }
+      
+        let filterStr = `{and: [${filterBody}]}`;
         console.log("Computed filter string:", filterStr);
         return filterStr;
+
     }
     
 
@@ -165,15 +178,17 @@ export default class AllListings extends LightningElement {
     error;
     query;
 
+    /*
+     * Retrieves list of property records (No Apex)
+     * Filters and sort options are applied here
+    */
     @wire(getListRecordsByName, {
         objectApiName: PROPERTY_OBJECT.objectApiName,
         listViewApiName: "All", 
         fields: ["Property__c.Name", "Property__c.Address__c" , "Property__c.DaysAYear__c",
-            "Property__c.Price__c" , "Property__c.Type__c", "Property__c.Location__c", "Property__c.Other__c",
-            "Property__c.Bedrooms__c", "Property__c.Bathrooms__c", "Property__c.State__c",
+            "Property__c.Price__c" ,
             "Property__c.DateListed__c"
         ],
-        searchTerm: "$query",
         sortBy:"$sortArray",
         where: "$filter"
     }) wiredProperties({ data, error }) {
@@ -184,10 +199,13 @@ export default class AllListings extends LightningElement {
                     Id: record.id, // Uppercase Id for consistency
                     Name: record.fields.Name.value,
                     Address__c: record.fields.Address__c.value,
+                    Price__c: record.fields.Price__c.value,
+                    DateListed__c: record.fields.DateListed__c.value,
                     DaysAYear__c: record.fields.DaysAYear__c.value
                 };
             });
             console.log('Transformed listings:', this.listings);
+            console.log('Listings before sending to getPropertyImages:', JSON.stringify(this.listings));
             this.enrichListings();
         } else if (error) {
             console.error('Error loading properties:', error);
@@ -225,17 +243,23 @@ export default class AllListings extends LightningElement {
                 };
             });
             console.log('Enriched Listings:', this.enrichedListings);
+            console.log(JSON.stringify(this.enrichedListings));
+            console.log('What is wrong?');
+
         }
     }
 
+    //Retrieves sorted option (Ex. Price high to low)
     get sortArray() {
         return [this.sort];
     }
 
+    //Retrieves Property Lists
     get propertyList(){
         return this.properties.data.records;
     }
     
+    // Stores the Location picklist options (States)
     locationStateOptions = [
         { label: 'Any', value: '' },
         { label: 'AL', value: 'AL' },

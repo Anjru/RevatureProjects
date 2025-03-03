@@ -3,6 +3,7 @@
     min-height: 100vh; /* Ensures it takes full screen height */
     width: 100%; /* Full width */
     overflow: auto; /* Allows scrolling */
+    background-color: #D2EAEC;
 }
 
 .buttonPanel{
@@ -13,19 +14,21 @@
 
 .button{
     background-color: #00BBD0;
-    color: white;
+    height: 100%;
 }
 
 .allListings {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    width:100%;
-    /* align-items: center; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 1500px;
+    height: 2000px;
+    /* align-items: center;
 }
 
 .holder {
-    height: 100vh;
+    /* height: 100vh; */
     background-color: #D2EAEC;
 }
 
@@ -37,26 +40,50 @@
 .listings {
     display: flex;
     flex-direction: column;
+    width: 1500px;
+    height: 2000px;
 }
 
 .pane {
     background-color: #00BBD0;
     display: flex;
-    justify-items: flex-end;
-    
-}
+    justify-content: space-between; 
+    align-items: center;            
+  }
+  
+  .propertyTitle {
+    /* You can add custom styles if needed, e.g.: */
+    font-family: -apple-system, BlinkMacSystemFont;
+    font-size: 3em;
+    color: white;
+    margin-left: 2%;
+    font-weight: bold;
+  }
+  
+  .pane2 {
+    display: flex;
+    justify-content: flex-end;  /* Align content to the right */
+    align-items: center;
+    /* Optionally, if you want pane2 to match the parent's height, use: */
+    height: 100%;
+  }
 
 .sort {
+    
     background-color: #38CDDD;
     margin-left: auto;
-    color: white;
     margin-top: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
     padding-left: 5px;
     padding-right: 5px;
+    border: 2px solid white;
+    color: white !important;
 }
 
 .card {
-    margin: 1% 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
 }

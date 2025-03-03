@@ -42,7 +42,7 @@ export default class SearchListings extends LightningElement {
 
     /////////////////////////////////////
 
-    //Grabs Records by Name WORKS
+    //Grabs Records by Name 
     @wire(getListRecordsByName, {
         objectApiName: PROPERTY_OBJECT.objectApiName,
         listViewApiName: "All", 
@@ -68,7 +68,6 @@ export default class SearchListings extends LightningElement {
             console.error('Error loading properties:', error);
         }
     }
-    
     
     // Wire adapter for property images.
     // This Apex method returns a list of PropertyImageWrapper objects,

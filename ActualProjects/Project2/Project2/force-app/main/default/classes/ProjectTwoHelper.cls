@@ -102,7 +102,7 @@ public without sharing class ProjectTwoHelper {
         for(FavoriteJunc__c fj : favoriteJunc){
             propertyIds.add(fj.Property__c);
         }
-        List<Property__c> properties = [SELECT Name, Price__c, Description__c, Location__c FROM Property__c WHERE Id IN :propertyIds];
+        List<Property__c> properties = [SELECT Name, Price__c, Description__c, Location__c, DaysAYear__c, DateListed__c, Address__c FROM Property__c WHERE Id IN :propertyIds];
         return properties;
     }
 
@@ -135,7 +135,7 @@ public without sharing class ProjectTwoHelper {
         for(ContentDocumentLink cdl : cdlList) {
             cdlIdList.add(cdl.ContentDocument.LatestPublishedVersionId);
         }
-        Set<String> fileTypes = new Set<String>{'jpg', 'png'};
+        Set<String> fileTypes = new Set<String>{'jpg', 'png', 'webp', 'jpeg'};
         return [SELECT Title, VersionDataUrl, FileType FROM ContentVersion WHERE Id IN :cdlIdList AND FileType IN :fileTypes];
     } catch (Exception e) {
         throw new AuraHandledException(e.getMessage());

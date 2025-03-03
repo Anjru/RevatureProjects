@@ -3,41 +3,47 @@
         <c-header></c-header>
     </div>
 
-    <div>
-        <div class="Profile">
+    <div class="background">
+        <div class="profilePic">
             <p>User Profile</p>
-            <img src={userPicture}>              
-                <lightning-card title="Edit Record">
-                    <lightning-record-edit-form record-id={userId} object-api-name="User">
-                        <lightning-input-field field-name="Name"></lightning-input-field>
-                        <lightning-input-field field-name="Email"></lightning-input-field>
-                        <lightning-button type="submit" label="Save" variant="brand"></lightning-button>
-                    </lightning-record-edit-form>
-                </lightning-card>
+            <img src={userPicture}>
+        </div>
+        <div class="profile">
+            
+            <lightning-card title="Edit Record">
+                <lightning-record-edit-form record-id={userId} object-api-name="User">
+                    <lightning-input-field field-name="Name"></lightning-input-field>
+                    <lightning-input-field field-name="Email"></lightning-input-field>
+                    <lightning-button type="submit" label="Save" variant="brand"></lightning-button>
+                </lightning-record-edit-form>
+            </lightning-card>
         </div>
 
-        <div class="Properties">
+        <div class="slds-col slds-size_1-of-4 slds-text-align_center card">
 
-        <lightning-card title="Favorite Properties">
-            <div class="Favorite">
-            <template if:true={enrichedListings}>
+            <lightning-card title="Favorite Properties">
+                <div class="Favorite">
+                    <template if:true={enrichedListings}>
 
-                    <template for:each={enrichedListings} for:item="property">
-                        
-                        <div key={property.Id} >
-                        <img src={property.ImageURL} >
-                        <p>Property Name: {property.Name}</p>
-                        <lightning-button label="delete" onclick={delFavorite} data-id={property.Id}>
+                        <template for:each={enrichedListings} for:item="property">
 
-                        </lightning-button>
-                        
-                        </div>
+                            <div key={property.Id} class="inside">
+                                <img src={property.ImageURL}>
+                                <p>Property Name: {property.Name}</p>
+                                <p>{property.Address__c}</p>
+                                <p>${property.Price__c}/month</p>
+                                <p>{property.DateListed__c}</p>
+                                <lightning-button label="delete" onclick={delFavorite} data-id={property.Id}>
+
+                                </lightning-button>
+
+                            </div>
+
+                        </template>
 
                     </template>
-
-            </template>
-            </div>
-        </lightning-card>
+                </div>
+            </lightning-card>
 
         </div>
 

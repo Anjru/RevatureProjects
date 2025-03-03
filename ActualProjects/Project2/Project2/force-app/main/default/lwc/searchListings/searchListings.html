@@ -12,10 +12,10 @@
                         <!-- Added data-id attribute and corrected the onclick function name -->
                         <a data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl} 
                             style="display:block; text-decoration:none; color:inherit;"
-                            class="slds-text-align_center ">
+                            class="slds-text-align_center">
                             <img src={property.ImageURL} alt="img">
-                            <p>Name: {property.Name}</p>
-                            <p>Address: {property.Address__c}</p>
+                            <p>{property.Name}</p>
+                            <p>{property.Address__c}</p>
                         </a>
                     </lightning-card>
                 </div>
