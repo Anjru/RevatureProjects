@@ -36,3 +36,14 @@ p {
     font-size: 16px;
     color: black;
 }
+
+.card {
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

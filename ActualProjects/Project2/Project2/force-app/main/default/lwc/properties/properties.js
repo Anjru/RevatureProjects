@@ -41,9 +41,27 @@ export default class Properties extends LightningElement {
 
     @track relatedProperties = [];
 
-    /////////////////////////
+
+    @api property = '';
+    propertyUrl = '';
+
+    passPropertyUrl(event) {
+        // Prevent default navigation so we can update the URL and then navigate
+        event.preventDefault();
+        
+        // Retrieve the property ID from the data attribute
+        const propId = event.currentTarget.dataset.id;
+        this.propertyUrl = `/properties?c__propertyId=${propId}`;
+        
+        // Optionally, perform any custom logic before redirecting
+        console.log('Navigating to:', this.propertyUrl);
+        
+        // Now navigate manually
+        window.location.href = this.propertyUrl;
+    }
+
     // Returns lists of option fields (pool)
-    @wire(getRecord, { recordId: '$recordId', fields: [MULTIPICKLIST_FIELD] })
+    @wire(getRecord, { recordId: '$propertyId', fields: [MULTIPICKLIST_FIELD] })
     wiredRecord({ error, data }) {
         if (data) {
             // Get the picklist field value
@@ -56,22 +74,6 @@ export default class Properties extends LightningElement {
             console.error(error);
         }
     }
-
-    //////////////////////////////
-    
-    // @wire(getRecordAttachments, {recordId : '$propertyId'})
-    // wiredAttacchments(result){
-    //     this.wiredCarousel = result;
-    //     if(result.data){
-    //         this.attachments = result.data.map(file => ({
-    //             title: file.Title,
-    //             fileType: file.FileType,
-    //             url: file.VersionDataUrl
-    //         }));
-    //     } else if(result.error){
-
-    //     }
-    // }
 
     async fetchAttachments() {
         if (!this.propertyId) {
@@ -95,10 +97,6 @@ export default class Properties extends LightningElement {
             console.error("Error fetching attachments:", error);
         }
     }
-    
-    ////////////////////////////////////
-
-    ////////////////c/aboutUs
 
     connectedCallback() {
         this.setMapMarkers();
@@ -124,8 +122,6 @@ export default class Properties extends LightningElement {
             }];
         }
     }
-
-    //////////////////////////////
 
     @wire(CurrentPageReference)
     getStateParameters(pageRef) {
@@ -161,8 +157,6 @@ export default class Properties extends LightningElement {
 
         }
     }
-
-    //////////////////////////////////////////
 
     // Raw featured Property__c records.
     @track listings;

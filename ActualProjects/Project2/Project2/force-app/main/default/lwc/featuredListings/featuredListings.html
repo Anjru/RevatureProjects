@@ -1,5 +1,5 @@
 <template>
-    <div class="featuredListings">
+    <div class="featuredListings slds-text-align_center">
         
         <lightning-card title="Featured Listings">
 
@@ -11,7 +11,9 @@
                             src={property.ImageURL} 
                             header={property.Name} 
                             description={property.DaysAYear__c}
-                            alternative-text="Featured Listing Image">
+                            alternative-text="Featured Listing Image" class="slds-text-align_center"
+                            data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl}>
+                            
                         </lightning-carousel-image>
                     </template>
                 </lightning-carousel>

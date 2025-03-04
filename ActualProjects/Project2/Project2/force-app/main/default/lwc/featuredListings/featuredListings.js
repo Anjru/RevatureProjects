@@ -10,26 +10,25 @@ export default class FeaturedListings extends LightningElement {
     // Mapping from property Id to its image URL.
     @track propertyImageMap = {};
 
-    ////////
     @api property = '';
         propertyUrl = '';
     
-        passPropertyUrl(event) {
-            // Prevent default navigation so we can update the URL and then navigate
-            event.preventDefault();
-            
-            // Retrieve the property ID from the data attribute
-            const propId = event.currentTarget.dataset.id;
-            this.propertyUrl = `/properties?c__propertyId=${propId}`;
-            
-            // Optionally, perform any custom logic before redirecting
-            console.log('Navigating to:', this.propertyUrl);
-            
-            // Now navigate manually
-            window.location.href = this.propertyUrl;
-        }
+    //Handles passing in record Id paramters to Property Page
+    passPropertyUrl(event) {
+        // Prevent default navigation so we can update the URL and then navigate
+        event.preventDefault();
+        
+        // Retrieve the property ID from the data attribute
+        const propId = event.currentTarget.dataset.id;
+        this.propertyUrl = `/properties?c__propertyId=${propId}`;
+        
+        // Optionally, perform any custom logic before redirecting
+        console.log('Navigating to:', this.propertyUrl);
+        
+        // Now navigate manually
+        window.location.href = this.propertyUrl;
+    }
 
-        ///////////
 
     // Wire adapter for featured listings.
     @wire(getFeaturedListings)

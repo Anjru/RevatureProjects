@@ -8,7 +8,6 @@ import EMAIL_FIELD from '@salesforce/schema/User.Email';
 import PROFILE_PIC_FIELD from '@salesforce/schema/User.ProfilePictureURL__c';
 import { getRecord, updateRecord } from 'lightning/uiRecordApi';
 import USER_ID from '@salesforce/user/Id';
-import ID_FIELD from '@salesforce/schema/User.Id';
 
 
 export default class Accounts extends LightningElement {
@@ -50,7 +49,7 @@ export default class Accounts extends LightningElement {
     
 
     @wire(getFavorite)
-wiredProperties(result) {
+    wiredProperties(result) {
     this.wiredProperty = result;
     if (result.data) {
         this.listings = result.data.map(record => {
@@ -67,7 +66,7 @@ wiredProperties(result) {
     } else if (result.error) {
         console.error('Error retrieving featured listings:', result.error);
     }
-}
+    }
 
     // Wire adapter for property images.
         // This Apex method returns a list of PropertyImageWrapper objects,
@@ -103,6 +102,7 @@ wiredProperties(result) {
             }
         }
         
+        //Removes favorite property and refreshes page
         async delFavorite(event){
             const propId = event.currentTarget.dataset.id;
             try{
@@ -113,44 +113,9 @@ wiredProperties(result) {
             }
         }
 
-        // Fetch existing profile image
-    // @wire(getRecord, { recordId: USER_ID, fields: [PROFILE_PIC_FIELD] })
-    // wiredPicture({ error, data }) {
-    //     if (data) {
-    //         this.userImageUrl = data.fields.ProfilePictureURL__c.value;
-    //     } else if (error) {
-    //         console.error('Error retrieving profile image:', error);
-    //     }
-    // }
-
-    // // Handle File Upload
-    // handleUploadFinished(event) {
-    //     const uploadedFiles = event.detail.files;
-    //     if (uploadedFiles.length > 0) {
-    //         const contentDocId = uploadedFiles[0].documentId;
-
-    //         // Construct File URL (Assuming it's stored in Salesforce)
-    //         const fileUrl = `/sfc/servlet.shepherd/version/download/${contentDocId}`;
-
-    //         // Update User Record
-    //         const fields = {};
-    //         fields[ID_FIELD.fieldApiName] = USER_ID;
-    //         fields[PROFILE_PIC_FIELD.fieldApiName] = fileUrl;
-
-    //         const recordInput = { fields };
-
-    //         updateRecord(recordInput)
-    //             .then(() => {
-    //                 this.userImageUrl = fileUrl; // Update UI
-    //                 this.showToast('Success', 'Profile image updated!', 'success');
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error updating profile image:', error);
-    //                 this.showToast('Error', 'Failed to update profile image', 'error');
-    //             });
-    //     }
-    // }
-
-    /////////////////////////
+        //Refreshes favorite Properties whenever screen is rendered
+        renderedCallback(){
+            refreshApex(this.wiredProperty);
+        }
 
 }

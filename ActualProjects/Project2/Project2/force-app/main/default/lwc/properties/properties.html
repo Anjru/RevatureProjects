@@ -22,165 +22,161 @@
         
     </lightning-card> -->
     <div class="backgroundExtra">
-    <div class="background">
-    
-    <div class="carousel">      
-    <div class="slds-size_1-of-4">
-    <lightning-carousel>
-        <template for:each={attachments} for:item="attachment">
-            <lightning-carousel-image
-                key={attachment.Id}
-                src={attachment.url}
-                alternative-text="Property">
-            </lightning-carousel-image>
-        </template>
-       
-    </lightning-carousel>
-    </div>
-    </div>  
+        <div class="background">
 
-    <div class="details">
-    <p>Property Title: {name}</p>
-    <p>Address: {address}</p>
-    <p>Price: {price}</p>
-    <p>Bathrooms: {bathrooms}</p>
-    <p>Bedrooms: {bedrooms}</p>
-    <p>Days A Year: {daysAYear}</p>
-    <p>Location: {location}</p>
-    <p> Latitude: {latitude} </p>
-    <p> Longitude: {longitude} </p>
-    <p>Square Footage: {squareFootage}</p>
-    <p>State: {state}</p>
-    <p>Type: {type}</p>
-    <p>Other Details</p>
-    <template for:each={picklistValues} for:item="value">
-        <p key={value}>{value}</p>
-    </template>
-    <p>Description: {description}</p>
-    <p>Map:</p>
-    <div class="map">
-        <!-- MAP -->
-        <template if:true={mapMarkers}>
-            <lightning-map 
-                map-markers={mapMarkers} 
-                zoom-level="12" 
-                center={mapCenter}>
-            </lightning-map>
-        </template>
-        <!-- Optionally, display a message if location data is not available -->
-        <template if:false={mapMarkers}>
-            <p>No location data available.</p>
-        </template>
-    </div>
+            <div class="carousel">
+                <div class="slds-size_1-of-4">
+                    <lightning-carousel>
+                        <template for:each={attachments} for:item="attachment">
+                            <lightning-carousel-image key={attachment.Id} src={attachment.url}
+                                alternative-text="Property">
+                            </lightning-carousel-image>
+                        </template>
 
-    </div>
-    
-    <!-- Property Image -->
-    
-    <!-- Button to save property -->
+                    </lightning-carousel>
+                </div>
+            </div>
 
-    <!-- Property Info -->
-
-    <!-- Contact Agent -->
-
-    <!-- Similar Properties -->
-    <div class="related">
-    <div class="slds-size_1-of-4">
-    <lightning-card title="Related Listings">
-        <div class="carousel">
-            <template if:true={enrichedListings}>
-                <lightning-carousel>
-                    <template for:each={enrichedListings} for:item="property">
-                        <lightning-carousel-image
-                            key={property.Id}
-                            src={property.ImageURL} 
-                            header={property.Name} 
-                            alternative-text="Related Listings">
-                        </lightning-carousel-image>
+            <div class="details">
+                <p>Property Title: {name}</p>
+                <p>Address: {address}</p>
+                <p>Price: {price}</p>
+                <p>Bathrooms: {bathrooms}</p>
+                <p>Bedrooms: {bedrooms}</p>
+                <p>Days A Year: {daysAYear}</p>
+                <!-- <p>Location: {location}</p> -->
+                <p> Latitude: {latitude} </p>
+                <p> Longitude: {longitude} </p>
+                <p>Square Footage: {squareFootage}</p>
+                <p>State: {state}</p>
+                <p>Type: {type}</p>
+                <p>Other Details</p>
+                <template for:each={picklistValues} for:item="value">
+                    <p key={value}>&nbsp;&nbsp;&nbsp;&nbsp;{value}</p>
+                </template>
+                <p>Description: {description}</p>
+                <p>Map:</p>
+                <div class="map">
+                    <!-- MAP -->
+                    <template if:true={mapMarkers}>
+                        <lightning-map map-markers={mapMarkers} zoom-level="12" center={mapCenter}>
+                        </lightning-map>
                     </template>
-                </lightning-carousel>
+                    <!-- Optionally, display a message if location data is not available -->
+                    <template if:false={mapMarkers}>
+                        <p>No location data available.</p>
+                    </template>
+                </div>
+
+            </div>
+
+            <!-- Property Image -->
+
+            <!-- Button to save property -->
+
+            <!-- Property Info -->
+
+            <!-- Contact Agent -->
+
+            <!-- Similar Properties -->
+            <div class="related">
+                <div class="slds-size_1-of-4">
+                    <lightning-card title="Related Listings">
+                        <div class="carousel">
+                            <template if:true={enrichedListings}>
+                                <lightning-carousel>
+                                    <template for:each={enrichedListings} for:item="property">
+                                        <lightning-carousel-image key={property.Id} src={property.ImageURL}
+                                            header={property.Name} alternative-text="Related Listings" data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl}>
+                                        </lightning-carousel-image>
+                                    </template>
+                                </lightning-carousel>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+            <!--  -->
+            <div class="toggle">
+                <lightning-button label="Contact Agent" onclick={toggleContact}>
+                </lightning-button>
+            </div>
+            <template lwc:if={toggle}>
+                <div class="form">
+                    <!--  ----------------------------------------------------------------------  -->
+                    <!--  NOTE: Please add the following <META> element to your page <HEAD>.      -->
+                    <!--  If necessary, please modify the charset parameter to specify the        -->
+                    <!--  character set of your HTML page.                                        -->
+                    <!--  ----------------------------------------------------------------------  -->
+
+
+
+                    <!--  ----------------------------------------------------------------------  -->
+                    <!--  NOTE: Please add the following <FORM> element to your page.             -->
+                    <!--  ----------------------------------------------------------------------  -->
+
+                    <form
+                        action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00Dak00000IwQJ7"
+                        method="POST">
+
+                        <input type=hidden name="oid" value="00Dak00000IwQJ7">
+                        <input type=hidden name="retURL"
+                            value="http://creative-goat-w487li-dev-ed.trailblaze.my.site.com/">
+
+                        <!--  ----------------------------------------------------------------------  -->
+                        <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
+                        <!--  these lines if you wish to test in debug mode.                          -->
+                        <!--  <input type="hidden" name="debug" value=1>                              -->
+                        <!--  <input type="hidden" name="debugEmail"                                  -->
+                        <!--  value="andrew.yang2022@gmail.com">                                      -->
+                        <!--  ----------------------------------------------------------------------  -->
+
+                        <input type="hidden" name="oid" value="00Dak00000IwQJ7">
+                        <input type="hidden" name="retURL"
+                            value="http://creative-goat-w487li-dev-ed.trailblaze.my.site.com/">
+
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input id="first_name" maxlength="40" name="first_name" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input id="last_name" maxlength="80" name="last_name" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" maxlength="80" name="email" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input id="company" maxlength="40" name="company" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input id="city" maxlength="40" name="city" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State/Province</label>
+                            <input id="state" maxlength="20" name="state" type="text" />
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" name="submit" value="Submit">
+                        </div>
+
+                    </form>
+                </div>
             </template>
         </div>
-    </lightning-card>
+
     </div>
-    </div>
+
     <!--  -->
-    <div class="toggle">
-        <lightning-button label="Contact Agent" onclick={toggleContact}>
-        </lightning-button>
-    </div>
-    <template lwc:if={toggle}>
-    <div class="form">
-        <!--  ----------------------------------------------------------------------  -->
-        <!--  NOTE: Please add the following <META> element to your page <HEAD>.      -->
-        <!--  If necessary, please modify the charset parameter to specify the        -->
-        <!--  character set of your HTML page.                                        -->
-        <!--  ----------------------------------------------------------------------  -->
-
-
-
-        <!--  ----------------------------------------------------------------------  -->
-        <!--  NOTE: Please add the following <FORM> element to your page.             -->
-        <!--  ----------------------------------------------------------------------  -->
-        
-        <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00Dak00000IwQJ7" method="POST">
-        
-        <input type=hidden name="oid" value="00Dak00000IwQJ7">
-        <input type=hidden name="retURL" value="http://creative-goat-w487li-dev-ed.trailblaze.my.site.com/">
-        
-        <!--  ----------------------------------------------------------------------  -->
-        <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
-        <!--  these lines if you wish to test in debug mode.                          -->
-        <!--  <input type="hidden" name="debug" value=1>                              -->
-        <!--  <input type="hidden" name="debugEmail"                                  -->
-        <!--  value="andrew.yang2022@gmail.com">                                      -->
-        <!--  ----------------------------------------------------------------------  -->
-        
-        <input type="hidden" name="oid" value="00Dak00000IwQJ7">
-        <input type="hidden" name="retURL" value="http://creative-goat-w487li-dev-ed.trailblaze.my.site.com/">
-
-        <div class="form-group">
-            <label for="first_name">First Name</label>
-            <input id="first_name" maxlength="40" name="first_name" type="text" />
-        </div>
-
-        <div class="form-group">
-            <label for="last_name">Last Name</label>
-            <input id="last_name" maxlength="80" name="last_name" type="text" />
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" maxlength="80" name="email" type="text" />
-        </div>
-
-        <div class="form-group">
-            <label for="company">Company</label>
-            <input id="company" maxlength="40" name="company" type="text" />
-        </div>
-
-        <div class="form-group">
-            <label for="city">City</label>
-            <input id="city" maxlength="40" name="city" type="text" />
-        </div>
-
-        <div class="form-group">
-            <label for="state">State/Province</label>
-            <input id="state" maxlength="20" name="state" type="text" />
-        </div>
-
-        <div class="form-group">
-            <input type="submit" name="submit" value="Submit">
-        </div>
-                
-        </form>
-        </div>
-        </template>
-        </div>
-
-    </div>
-
-            <!--  -->
     <div>
         <c-footer></c-footer>
     </div>

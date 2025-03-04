@@ -48,7 +48,9 @@
     background-color: #00BBD0;
     display: flex;
     justify-content: space-between; 
-    align-items: center;            
+    align-items: center;  
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
   }
   
   .propertyTitle {
@@ -69,15 +71,21 @@
   }
 
 .sort {
-    
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background-color: #38CDDD;
     margin-left: auto;
     margin-top: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-top: 15px;
     border: 2px solid white;
+    border-radius: 10px;
     color: white !important;
 }
 
@@ -86,4 +94,19 @@
     padding-right: 1%;
     padding-top: 1%;
     padding-bottom: 1%;
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px); /* Moves card up */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+}
+
+.custom-label {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
 }

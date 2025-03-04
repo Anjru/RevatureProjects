@@ -7,13 +7,13 @@
     <div class="slds-grid slds-gutters slds-wrap holder">
         <template if:true={enrichedListings}>
             <template for:each={enrichedListings} for:item="property">
-                <div key={property.Id} class="slds-col slds-size_1-of-3 card" data-record-id={property.Id}>
+                <div key={property.Id} class="slds-col slds-size_1-of-3 card card-hover" data-record-id={property.Id}>
                     <lightning-card>
                         <!-- Added data-id attribute and corrected the onclick function name -->
                         <a data-id={property.Id} href={propertyUrl} onclick={passPropertyUrl} 
                             style="display:block; text-decoration:none; color:inherit;"
                             class="slds-text-align_center">
-                            <img src={property.ImageURL} alt="img">
+                            <img src={property.ImageURL} alt="img" style="width: 100%; height: 300px; object-fit: cover;">
                             <p>{property.Name}</p>
                             <p>{property.Address__c}</p>
                         </a>

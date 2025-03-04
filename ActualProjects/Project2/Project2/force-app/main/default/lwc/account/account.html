@@ -4,12 +4,12 @@
     </div>
 
     <div class="background">
+        
         <div class="profilePic">
             <p>User Profile</p>
             <img src={userPicture}>
         </div>
         <div class="profile">
-            
             <lightning-card title="Edit Record">
                 <lightning-record-edit-form record-id={userId} object-api-name="User">
                     <lightning-input-field field-name="Name"></lightning-input-field>
@@ -18,33 +18,30 @@
                 </lightning-record-edit-form>
             </lightning-card>
         </div>
-
-        <div class="slds-col slds-size_1-of-4 slds-text-align_center card">
-
-            <lightning-card title="Favorite Properties">
+        
+        <div class="slds-grid slds-gutters">
+        <div class="slds-text-align_center card">
                 <div class="Favorite">
                     <template if:true={enrichedListings}>
-
                         <template for:each={enrichedListings} for:item="property">
-
-                            <div key={property.Id} class="inside">
-                                <img src={property.ImageURL}>
+                            <div key={property.Id} class="slds-col inside slds-p-around_medium" 
+                                data-record-id={property.Id}>
+                            <lightning-card class="card-hover" style="width: 100%; height: 400px;">
+                            <!-- <div key={property.Id} class="slds-col inside slds-m-top_small"> -->
+                                <img src={property.ImageURL} style="width: 100%; height: 300px; object-fit: cover;">
                                 <p>Property Name: {property.Name}</p>
                                 <p>{property.Address__c}</p>
                                 <p>${property.Price__c}/month</p>
                                 <p>{property.DateListed__c}</p>
                                 <lightning-button label="delete" onclick={delFavorite} data-id={property.Id}>
-
                                 </lightning-button>
-
+                            </lightning-card>
                             </div>
-
                         </template>
-
                     </template>
                 </div>
-            </lightning-card>
-
+            
+        </div>
         </div>
 
     </div>

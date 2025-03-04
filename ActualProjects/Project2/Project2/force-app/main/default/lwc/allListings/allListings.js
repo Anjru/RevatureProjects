@@ -1,39 +1,68 @@
-import { LightningElement,track,wire } from 'lwc';
+import { LightningElement,track,wire,api } from 'lwc';
 import { getListRecordsByName } from 'lightning/uiListsApi';
 import PROPERTY_OBJECT from '@salesforce/schema/Property__c';
-import getPropertyImages from '@salesforce/apex/projectTwoHelper.getPropertyImages';
-import addFavorite from '@salesforce/apex/projectTwoHelper.addFavorite';
+import getPropertyImages from '@salesforce/apex/ProjectTwoHelper.getPropertyImages';
+import addFavorite from '@salesforce/apex/ProjectTwoHelper.addFavorite';
 import isGuest from '@salesforce/user/isGuest';
 
 // import Properties from 'c/properties/properties';
 export default class AllListings extends LightningElement {
+    //Is toggled and dtermines if filter pane shows
     filterBoolean = false;
     
+    //Tracks if User is guest or not
+    //Will dynamically render entities
     isNotGuest = !isGuest;
+
+    //Tracks errors returned from uiListsApi
+    error;
     
-    @track selectedOption = ''; 
-    @track sliderValue;
+    //These values hold the selected options
+    selectedOption = ''; 
+    sliderValue;
+    bedroom;
+    bathroom;
+    locationState;
+    other;
 
-    @track bedroom;
-    @track bathroom;
-    @track locationState;
-    @track other;
+    selectedPropertyType = '';
+    sort = "-Property__c.Price__c";
 
-    @track selectedPropertyType = '';
-    @track sort = "-Property__c.Price__c";
+    @api property = '';
+    propertyUrl = '';
+        
+    //Handles passing in record Id paramters to Property Page
+    //Currently not being used...
+    passPropertyUrl(event) {
+        // Prevent default navigation so we can update the URL and then navigate
+        event.preventDefault();
+        
+        // Retrieve the property ID from the data attribute
+        const propId = event.currentTarget.dataset.id;
+        this.propertyUrl = `/properties?c__propertyId=${propId}`;
+        
+        // Optionally, perform any custom logic before redirecting
+        console.log('Navigating to:', this.propertyUrl);
+        
+        // Now navigate manually
+        window.location.href = this.propertyUrl;
+    }
 
+    // Stores property list returned from getListRecordsByName
     @track listings;
     // Enriched listings with an extra field (ImageURL) from the property images.
     @track enrichedListings;
     // Mapping from property Id to its image URL.
     @track propertyImageMap = {}; 
 
+    // Will hold more trivial options to filter by
     otherOptions = [
         { label: 'Pool', value: 'Pool' },
         { label: 'Pet-Friendly', value: 'Pet-Friendly' },
         { label: 'Garage', value: 'Garage' }
     ];
 
+    // Will hold sorting options
     sortOptions = [
         {label: 'Price(high-low)', value: "-Property__c.Price__c"},
         {label: 'Price(low-high)', value: "Property__c.Price__c"},
@@ -41,6 +70,7 @@ export default class AllListings extends LightningElement {
         {label: 'Date Listed(low-high)', value: "Property__c.DateListed__c"}
     ]
 
+    // Will hold optoins of Property types
     propertyTypeOptions = [
         { label: 'Any', value: '' },
         { label: 'Apartment', value: 'Apartment' },
@@ -48,6 +78,7 @@ export default class AllListings extends LightningElement {
         { label: 'Condo', value: 'Condo' }
     ];
 
+    // Will hold options displaying the num of Bedrooms
     bedroomOptions = [
         { label: 'Any', value: '' },
         { label: '1', value: '1' },
@@ -58,6 +89,7 @@ export default class AllListings extends LightningElement {
         { label: '6', value: '6' }
     ];
 
+    // Will hold options displaying num of bathrooms
     bathroomOptions = [
         { label: 'Any', value: '' },
         { label: '1', value: '1' },
@@ -68,15 +100,15 @@ export default class AllListings extends LightningElement {
         { label: '6', value: '6' }
     ];
 
-    // add to favorites
-    async favorite(event){
-        // await addFavorite / pass in current property
-        
+    // adds a property to favorites
+    // addFavorite is called from APEX Class
+    async favorite(event){        
         const propId = event.currentTarget.dataset.id;
         await addFavorite({propertyId: propId});
     }
 
     // Toggle filter pane
+    // A boolean handles this
     toggleFilter(){
         if(this.filterBoolean){
             this.filterBoolean = false;
@@ -115,12 +147,13 @@ export default class AllListings extends LightningElement {
         this.other = event.detail.value;
     }
 
-    //
+    //Updates the sort option
     handleSortChange(event){
         this.sort = event.detail.value;
     }
 
-    //Filters results based on filters applied 
+    // Filters results based on filters applied 
+    // is returned to getListRecords where claus
     get filter() {
         //Will store filter string for individual options
         let parts = [];
@@ -166,21 +199,15 @@ export default class AllListings extends LightningElement {
             }
         }
       
+        // Appends remaing string together
         let filterStr = `{and: [${filterBody}]}`;
         console.log("Computed filter string:", filterStr);
         return filterStr;
-
     }
-    
-
-    ////////////////////////////////////////
-
-    error;
-    query;
 
     /*
-     * Retrieves list of property records (No Apex)
-     * Filters and sort options are applied here
+    * Retrieves list of property records (No Apex)
+    * Filters and sort options are applied here
     */
     @wire(getListRecordsByName, {
         objectApiName: PROPERTY_OBJECT.objectApiName,
@@ -189,6 +216,7 @@ export default class AllListings extends LightningElement {
             "Property__c.Price__c" ,
             "Property__c.DateListed__c"
         ],
+        // searchTerm: "$query",
         sortBy:"$sortArray",
         where: "$filter"
     }) wiredProperties({ data, error }) {
@@ -212,9 +240,11 @@ export default class AllListings extends LightningElement {
         }
     }
 
-    // Wire adapter for property images.
-    // This Apex method returns a list of PropertyImageWrapper objects,
-    // each containing (for example) propertyId and versionDataUrl.
+    /*
+    * Wire adapter for property images.
+    * This Apex method returns a list of PropertyImageWrapper objects,
+    * each containing (for example) propertyId and versionDataUrl.
+    */
     @wire(getPropertyImages, { properties: '$listings' })
     wiredPropertyImages({ error, data }) {
         if (data) {
