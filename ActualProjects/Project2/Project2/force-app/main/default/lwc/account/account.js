@@ -9,9 +9,7 @@ import PROFILE_PIC_FIELD from '@salesforce/schema/User.ProfilePictureURL__c';
 import { getRecord, updateRecord } from 'lightning/uiRecordApi';
 import USER_ID from '@salesforce/user/Id';
 
-
 export default class Accounts extends LightningElement {
-
 
     @track listings;
     // Enriched listings with an extra field (ImageURL) from the property images.
@@ -45,8 +43,6 @@ export default class Accounts extends LightningElement {
             console.error('Error retrieving user data:', error);
         }
     }
-
-    
 
     @wire(getFavorite)
     wiredProperties(result) {
