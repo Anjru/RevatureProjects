@@ -1,20 +1,19 @@
-    //  Implement an Apex class (called WarehouseCalloutService) that implements the queueable interface and makes 
+//  Implement an Apex class (called WarehouseCalloutService) that implements the queueable interface and makes 
     //  a callout to the external service used for warehouse inventory management.
     //  This service receives updated values in the external system and updates the related records in Salesforce. 
     //  Before checking this section, enqueue the job at least once to confirm that it's working as expected.
 
 public with sharing class WarehouseCalloutService implements Queueable, Database.AllowsCallouts {
 
-    public WarehouseCalloutService() {
+    private static final String WAREHOUSE_URL = 'https://th-superbadge-apex.herokuapp.com/equipment';
 
-    }
     // receives updated values in the external system and updates the related records in Salesforce
     public void execute(QueueableContext context) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
         request.setHeader('Content-Type', 'application/json');
-        request.setEndpoint('https://th-superbadge-apex.herokuapp.com/equipment');
+        request.setEndpoint(WAREHOUSE_URL);
         HttpResponse response = http.send(request);
 
         //If the request is successful, parse the JSON response.
