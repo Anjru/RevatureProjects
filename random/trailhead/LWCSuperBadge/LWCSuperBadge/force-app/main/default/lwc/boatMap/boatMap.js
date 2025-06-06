@@ -1,15 +1,27 @@
-// import BOATMC from the message channel
+
+import { api, LightningElement, wire } from 'lwc';
+import BOATMC from '@salesforce/messageChannel/BoatMessageChannel__c';
+import { subscribe, MessageContext, APPLICATION_SCOPE } from 'lightning/messageService';
+import {getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
 // Declare the const LONGITUDE_FIELD for the boat's Longitude__s
+const LONGITUDE_FIELD = 'Boat__c.GeoLocation__Longitude__s';
+
 // Declare the const LATITUDE_FIELD for the boat's Latitude
+const LATITUDE_FIELD = 'Boat__c.GeoLocation__Latitude__s';
+
 // Declare the const BOAT_FIELDS as a list of [LONGITUDE_FIELD, LATITUDE_FIELD];
+const BOAT_FIELDS = [LONGITUDE_FIELD, LATITUDE_FIELD]
+
 export default class BoatMap extends LightningElement {
   // private
   subscription = null;
+  
   boatId;
 
   // Getter and Setter to allow for logic to run on recordId change
   // this getter must be public
+  @api
   get recordId() {
     return this.boatId;
   }
@@ -22,9 +34,13 @@ export default class BoatMap extends LightningElement {
   mapMarkers = [];
 
   // Initialize messageContext for Message Service
+  @wire(MessageContext)
+  messageContext;
 
   // Getting record's location to construct map markers using recordId
   // Wire the getRecord method using ('$boatId')
+  @wire(getRecord, { recordId: '$boatId', fields: BOAT_FIELDS })
+  // Declare the const record as a variable'})
   wiredRecord({ error, data }) {
     // Error handling
     if (data) {
@@ -47,6 +63,10 @@ export default class BoatMap extends LightningElement {
       return;
     }
     // Subscribe to the message channel to retrieve the recordId and explicitly assign it to boatId.
+    this.subscription = subscribe(
+        this.messageContext, BOATMC, 
+        (message) => { this.boatId = message.recordId}, { scope: APPLICATION_SCOPE}
+    );
   }
 
   // Calls subscribeMC()
