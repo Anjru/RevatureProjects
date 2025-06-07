@@ -1,27 +1,54 @@
-// ...
+import {wire, LightningElement, api, track } from 'lwc';
+import getBoats from '@salesforce/apex/BoatDataService.getBoats';
+import { MessageContext, publish  } from 'lightning/messageService';
+import { refreshApex } from '@salesforce/apex';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
 const SUCCESS_TITLE = 'Success';
 const MESSAGE_SHIP_IT     = 'Ship it!';
 const SUCCESS_VARIANT     = 'success';
 const ERROR_TITLE   = 'Error';
 const ERROR_VARIANT = 'error';
 export default class BoatSearchResults extends LightningElement {
+  @api
   selectedBoatId;
-  columns = [];
+  columns = [ {label: 'Name', fieldName: 'Name', editable: true },
+      { label: 'Length', fieldName: 'Length__c', type: number},
+      { label: 'Price', fieldName: 'Price__c', type: currency},
+      { label: 'Description', fieldName: 'Description__c'}
+  ];
+
+  @api
   boatTypeId = '';
+  
+  @track
   boats;
   isLoading = false;
+
+  @track
+  values = [];
   
   // wired message context
+  @wire(MessageContext)
   messageContext;
   // wired getBoats method 
-  wiredBoats(result) { }
+  @wire(getBoats, {boatTypeId: '$selectedBoatId'})
+  wiredBoats({error, data}) {
+      if(data) {
+          this.boats = data;
+      } else if (error) {
+
+      }
+   }
   
   // public function that updates the existing boatTypeId property
   // uses notifyLoading
+  @api
   searchBoats(boatTypeId) { }
   
   // this public function must refresh the boats asynchronously
   // uses notifyLoading
+  @api
   refresh() { }
   
   // this function must update selectedBoatId and call sendMessageService
