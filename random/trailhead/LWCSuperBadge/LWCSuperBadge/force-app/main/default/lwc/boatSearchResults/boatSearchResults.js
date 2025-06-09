@@ -36,7 +36,7 @@ export default class BoatSearchResults extends LightningElement {
   wiredBoats({error, data}) {
       if(data) {
           this.boats = data;
-      } else if (error) {
+      } else if (error) { 
 
       }
    }
@@ -44,15 +44,22 @@ export default class BoatSearchResults extends LightningElement {
   // public function that updates the existing boatTypeId property
   // uses notifyLoading
   @api
-  searchBoats(boatTypeId) { }
+  searchBoats(boatTypeId) {
+      this.boatTypeId = boatTypeId;
+   }
   
   // this public function must refresh the boats asynchronously
   // uses notifyLoading
   @api
-  refresh() { }
+  refresh() {
+      refreshApex(this.notifyLoading(this.isLoading));
+   }
   
   // this function must update selectedBoatId and call sendMessageService
-  updateSelectedTile() { }
+  updateSelectedTile() {
+      this.selectedBoatId = this.boatTypeId;
+      this.sendMessageService(this.selectedBoatId);
+   }
   
   // Publishes the selected boat Id on the BoatMC.
   sendMessageService(boatId) { 
